@@ -1,3 +1,11 @@
 {{ form_start(form) }}
-{{ form_widget(form) }}
+{{ form_row(form.name) }}
+{{ form_row(form.description) }}
+
+<ul class="images list-group" data-prototype="{{  form_widget(form.images.vars.prototype)|e('html_attr') }}">
+    {% for image in form.images %}
+        <li class="list-group-item">{{ form_row(image.url) }}</li>
+    {% endfor %}
+</ul>
+{{ form_rest(form) }}
 {{ form_end(form) }}

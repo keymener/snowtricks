@@ -34,7 +34,6 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-
             $trick->setDate(new \DateTime());
 
             $this->em->persist($trick);
@@ -42,6 +41,7 @@ class TrickController extends AbstractController
 
 
             $this->addFlash('success', 'La figure a bien été enregistrée');
+            return $this->redirectToRoute('home');
 
         }
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Trick;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +20,13 @@ class TrickType extends AbstractType
 
             ])
             ->add('description', TextareaType::class)
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'label' => false
+            ])
             ->add('submit', SubmitType::class)
         ;
     }
