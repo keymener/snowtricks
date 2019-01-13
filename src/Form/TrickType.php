@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Trick;
+use App\Entity\TrickGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -33,6 +35,11 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
                 'label' => false
+            ])
+            ->add('trickGroup', EntityType::class, [
+                'class' => TrickGroup::class,
+                'choice_label' => 'name',
+                
             ])
 
         ;

@@ -46,9 +46,9 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Group")
+     * @ORM\ManyToOne(targetEntity="TrickGroup")
      */
-    private $group;
+    private $trickGroup;
 
 
     public function __construct()
@@ -160,15 +160,17 @@ class Trick
         return $this;
     }
 
-    public function getGroup(): ?Group
+    public function getTrickGroup(): ?TrickGroup
     {
-        return $this->group;
+        return $this->trickGroup;
     }
 
-    public function setGroup(?Group $group): self
+    public function setTrickGroup(?TrickGroup $trickGroup): self
     {
-        $this->group = $group;
+        $this->trickGroup = $trickGroup;
 
         return $this;
     }
+
+
 }
