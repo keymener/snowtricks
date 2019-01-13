@@ -42,6 +42,7 @@ class TrickType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trick::class,
+            'translation_domain' => 'forms'
         ]);
     }
 }
