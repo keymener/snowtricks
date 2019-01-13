@@ -41,7 +41,7 @@ class Trick
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="Video", mappedBy="trick")
+     * @ORM\OneToMany(targetEntity="Video", mappedBy="trick", cascade={"persist"})
      */
     private $videos;
 
