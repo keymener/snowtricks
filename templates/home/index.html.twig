@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Figure</th>
+            <th>Description</th>
+            <th>Images</th>
+           
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for trick in tricks %}
+            <tr>
+                <td>{{ trick.id }}</td>
+                <td>{{ trick.name }}</td>
+                <td>{{ trick.description }}</td>
+                <td>
+                    <ul>
+
+                        {% for image in trick.images %}
+
+                            <li>
+                                {{ image.url }} {{ image.alt }}
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

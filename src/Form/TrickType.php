@@ -27,7 +27,7 @@ class TrickType extends AbstractType
                 'by_reference' => false,
                 'label' => false
             ])
-            ->add('submit', SubmitType::class)
+
         ;
     }
 
