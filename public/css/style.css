@@ -1,0 +1,53 @@
+body:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: -1;
+
+    display: block;
+    background-image: url("/img/snowboard-cliff-backflip.jpg");
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+
+
+}
+
+html, body {
+
+    font-family: 'Work Sans', sans-serif;
+    scroll-behavior: smooth;
+
+
+
+
+
+}
+
+.navbar-brand{
+    font-weight: bold;
+    text-transform: uppercase;
+
+
+}
+
+header {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #456f7a;
+
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+
+
+    z-index: 1;
+
+}
+
+.tricks{
+
+}

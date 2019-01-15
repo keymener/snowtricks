@@ -19,6 +19,19 @@ class TrickController extends AbstractController
         $this->em = $em;
     }
 
+    /**
+     * @Route("/", name="trick_home")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function home()
+    {
+        $tricks = $this->getDoctrine()->getRepository(Trick::class)->findAll();
+
+        return $this->render('trick/home.html.twig', [
+            'tricks' => $tricks
+        ]);
+    }
+
 
     /**
      * @Route("/trick/new", name="trick_new")
