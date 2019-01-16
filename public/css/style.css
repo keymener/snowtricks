@@ -40,6 +40,10 @@ footer {
     height: 100px;
     bottom: 0;
     width: 100%;
+    display: flex;
+    align-items: center;
+    color: slategrey;
+    font-size: 0.8em;
 }
 
 .navbar-brand {
@@ -47,7 +51,6 @@ footer {
     text-transform: uppercase;
 
 }
-
 
 .narrow-down {
     position: relative;
@@ -84,4 +87,7 @@ footer {
     width: 100%;
     height: 100%;
 
+}
+.copyright{
+    margin-left: 2em;
 }
