@@ -8,6 +8,7 @@ body {
     scroll-behavior: smooth;
     height: 100%;
     width: 100%;
+    background-color: #f8f9fa;
 }
 
 header {
@@ -46,6 +47,7 @@ footer {
     text-transform: uppercase;
 
 }
+
 
 .narrow-down {
     position: relative;
