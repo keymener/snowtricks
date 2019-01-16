@@ -3,10 +3,38 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+
     <header>
-        <h1>Learn tricks</h1>
+        <h1>Learn Tricks</h1>
+        <div class="narrow-down">
+            <i class="fas fa-arrow-down"></i>
+        </div>
     </header>
-    <section class="tricks">
-        <div class="paper"></div>
+
+    <section>
+        <div class="tricks">
+            {% for trick in tricks %}
+                <div class="ticket m-3">
+                    <div class="ticket-top">
+                        <img class="ticket-image" src="{{ trick.images.first.url }}" alt="{{ trick.images.first.alt }}">
+                    </div>
+                    <div class="ticket-footer">
+                        <div class="name">
+                            {{ trick.name }}
+                        </div>
+                        <div class="edit"><i class="fas fa-pencil-alt"></i></div>
+                        <div class="delete"><i class="fas fa-trash-alt"></i></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </section>
+
+
+    <footer>
+        Copyright Snowtricks 2019
+
+    </footer>
+
+
 {% endblock %}
