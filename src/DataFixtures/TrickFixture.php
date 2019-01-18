@@ -15,7 +15,7 @@ class TrickFixture extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        for ($i = 0; $i <= 30; $i++) {
+        for ($i = 0; $i < 30; $i++) {
 
             $trick = new Trick();
             $trick->setName('Figure' . $i);

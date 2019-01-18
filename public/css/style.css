@@ -1,11 +1,12 @@
 html {
     height: 100%;
     width: 100%;
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Work Sans', sans-serif;
-    scroll-behavior: smooth;
+
     height: 100%;
     width: 100%;
     background-color: #f8f9fa;
@@ -16,12 +17,7 @@ header {
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: auto;
+    width: 100%;
 
     color: #456f7a;
     text-transform: uppercase;
@@ -52,9 +48,11 @@ footer {
 
 }
 
-.narrow-down {
-    position: relative;
-    float: right;
+.narrow-down a {
+
+    color: black;
+    font-size: 3rem;
+
 }
 
 .tricks {
@@ -88,6 +86,11 @@ footer {
     height: 100%;
 
 }
-.copyright{
+
+.copyright {
     margin-left: 2em;
+}
+
+.clax{
+ border: 3px solid black;
 }
