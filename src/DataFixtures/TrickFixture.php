@@ -4,12 +4,16 @@ namespace App\DataFixtures;
 
 use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\TrickGroup;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TrickFixture extends Fixture
 {
+
+
     public function load(ObjectManager $manager)
     {
         // $product = new Product();
@@ -21,6 +25,8 @@ class TrickFixture extends Fixture
             $trick->setName('Figure' . $i);
             $trick->setDate(new \DateTime());
 
+            $group = new TrickGroup();
+            $group->setName('Mon groupe ' . $i);
 
             $image = new Image();
             $image->setUrl('https://via.placeholder.com/15' . $i);
@@ -31,7 +37,9 @@ class TrickFixture extends Fixture
 
             $trick->addImage($image);
             $trick->addVideo($video);
+            $trick->setTrickGroup($group);
 
+            $manager->persist($group);
             $manager->persist($image);
             $manager->persist($video);
             $manager->persist($trick);
