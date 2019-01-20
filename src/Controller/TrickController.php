@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/new", name="trick_new")
      */
-    public function newTrick(Request $request)
+    public function newTrick(Request $request, FileUploader $fileUploader)
     {
 
         $trick = new Trick();
@@ -33,6 +34,10 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $file = $trick->getImage();
+            $fileName = $fileUploader->upload($file);
+
+            $trick->setImage($fileName);
 
             $trick->setDate(new \DateTime());
 

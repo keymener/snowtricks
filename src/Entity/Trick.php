@@ -36,9 +36,9 @@ class Trick
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="trick", cascade={"persist"})
+     * @ORM\Column(type="string")
      */
-    private $images;
+    private $image;
 
     /**
      * @ORM\OneToMany(targetEntity="Video", mappedBy="trick", cascade={"persist"})
@@ -53,7 +53,7 @@ class Trick
 
     public function __construct()
     {
-        $this->images = new ArrayCollection();
+
         $this->videos = new ArrayCollection();
     }
 
@@ -99,35 +99,21 @@ class Trick
     }
 
     /**
-     * @return Collection|Image[]
+     * @return mixed
      */
-    public function getImages(): Collection
+    public function getImage()
     {
-        return $this->images;
+        return $this->image;
     }
 
-    public function addImage(Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setTrick($this);
-        }
-
-        return $this;
+        $this->image = $image;
     }
 
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getTrick() === $this) {
-                $image->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Video[]

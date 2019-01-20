@@ -7,7 +7,7 @@ use App\Entity\TrickGroup;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,12 +22,8 @@ class TrickType extends AbstractType
 
             ])
             ->add('description', TextareaType::class)
-            ->add('images', CollectionType::class, [
-                'entry_type' => ImageType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'by_reference' => false,
-                'label' => false
+            ->add('image', FileType::class, [
+                'label' => 'Uploader une image'
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
@@ -39,10 +35,8 @@ class TrickType extends AbstractType
             ->add('trickGroup', EntityType::class, [
                 'class' => TrickGroup::class,
                 'choice_label' => 'name',
-                
-            ])
 
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
