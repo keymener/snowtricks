@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use App\Service\FileUploader;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Image
 {
@@ -17,45 +20,46 @@ class Image
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name", type="string")
      */
-    private $url;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $alt;
+    private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="Trick", inversedBy="images")
      */
     private $trick;
 
+    private $file;
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param mixed $file
+     */
+    public function setFile($file): void
+    {
+        $this->file = $file;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getName(): ?string
     {
-        return $this->url;
+        return $this->name;
     }
 
-    public function setUrl(string $url): self
+    public function setName(string $name): self
     {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    public function getAlt(): ?string
-    {
-        return $this->alt;
-    }
-
-    public function setAlt(string $alt): self
-    {
-        $this->alt = $alt;
+        $this->name = $name;
 
         return $this;
     }
@@ -71,4 +75,6 @@ class Image
 
         return $this;
     }
+
+
 }

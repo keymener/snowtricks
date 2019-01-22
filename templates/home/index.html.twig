@@ -25,7 +25,9 @@
                 <td>{{ trick.trickGroup.name }}</td>
                 <td>{{ trick.description }}</td>
                 <td>
-                   {{ trick.image }}
+                    {% for image in trick.images %}
+                        {{ image.name }}
+                    {% endfor %}
                 </td>
                 <td>
                     <ul>

@@ -23,7 +23,6 @@ class ImageController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
-            dump($image);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);

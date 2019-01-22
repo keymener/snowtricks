@@ -15,13 +15,18 @@ class FileUploader
         $this->uploadDirectory = $uploadDirectory;
     }
 
+    /**
+     * Generates a unique filname and upload it into specified folder and return the filename
+     * @param UploadedFile $file
+     * @return string
+     */
     public function upload(UploadedFile $file)
     {
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
 
-        try{
+        try {
             $file->move($this->uploadDirectory, $fileName);
-        }catch(FileException $e){
+        } catch (FileException $e) {
 
         }
 

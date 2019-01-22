@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Service\FileUploader;
@@ -34,10 +35,7 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $file = $trick->getImage();
-            $fileName = $fileUploader->upload($file);
 
-            $trick->setImage($fileName);
 
             $trick->setDate(new \DateTime());
 
