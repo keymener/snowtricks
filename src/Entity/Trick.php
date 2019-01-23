@@ -51,6 +51,11 @@ class Trick
      */
     private $trickGroup;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     */
+    private $firstImage;
+
 
     public function __construct()
     {
@@ -171,6 +176,18 @@ class Trick
                 $image->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFirstImage(): ?Image
+    {
+        return $this->firstImage;
+    }
+
+    public function setFirstImage(?Image $firstImage): self
+    {
+        $this->firstImage = $firstImage;
 
         return $this;
     }
