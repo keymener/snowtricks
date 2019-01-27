@@ -26,7 +26,7 @@
                 <td>{{ trick.description }}</td>
                 <td>
                     {% for image in trick.images %}
-                        {{ image.name }}
+                        {{ image.name }} <b>{{ image.isFirst }}</b>
                     {% endfor %}
                 </td>
                 <td>

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Selectionner une image à la une{% endblock %}
+
+{% block body %}
+    <h4>Selectionner une image à la une</h4>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for image in trick.images %}
+            <tr>
+                <td>
+                    <img src="{{ asset('uploads/images/' ~ image.name) }}" alt="Image"
+                         style="height:100px; width: auto;">
+                </td>
+                <td>
+                    {% if image.isFirst == false %}
+                        <form action="{{ path('trick_set_image_first', {'id': image.id}) }}" method="post">
+                            <input type="hidden" name="token" value="{{ csrf_token('trick-first-image') }}"/>
+                            <button type="submit" class="btn btn-primary">Choisir</button>
+                        </form>
+                    {% else %}
+                        <p>Image à la une</p>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
