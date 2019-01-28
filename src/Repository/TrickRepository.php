@@ -20,13 +20,14 @@ class TrickRepository extends ServiceEntityRepository
     }
 
 
-    public function getTricks(int $maxResult){
+    public function getTricks(int $maxResult)
+    {
         return $this->createQueryBuilder('t')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
+
 
     // /**
     //  * @return Trick[] Returns an array of Trick objects

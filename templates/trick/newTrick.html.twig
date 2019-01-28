@@ -7,7 +7,7 @@
         <h1>Créer une figure</h1>
 
 
-                {{ include('trick/_form.html.twig') }}
+        {{ include('trick/_form.html.twig') }}
 
 
     </div>
@@ -16,14 +16,17 @@
 
 {% block javascripts %}
 
+    {{ parent() }}
+
     <script>
         var $collectionHolder;
 
         // setup an "add a tag" link
         var $addImageButton = $('<button type="button" class="add_image_link btn btn-info">Nouvelle image</button>');
         var $newLinkLi = $('<li class="list-group-item"></li>').append($addImageButton);
-
-        jQuery(document).ready(function() {
+    </script>
+    <script>
+        jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
             $collectionHolder = $('ul.images');
 
@@ -34,7 +37,7 @@
             // index when inserting a new item (e.g. 2)
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-            $addImageButton.on('click', function(e) {
+            $addImageButton.on('click', function (e) {
                 // add a new tag form (see next code block)
                 addImageForm($collectionHolder, $newLinkLi);
             });
@@ -64,7 +67,8 @@
             var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
             $newLinkLi.before($newFormLi);
         }
-
+    </script>
+    <script>
         // videos
 
         var $collectionHolder2;
@@ -73,7 +77,7 @@
         var $addVideoButton = $('<button type="button" class="add_video_link btn btn-info">Nouvelle video</button>');
         var $newLinkLi2 = $('<li class="list-group-item"></li>').append($addVideoButton);
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
             $collectionHolder2 = $('ul.videos');
 
@@ -84,7 +88,7 @@
             // index when inserting a new item (e.g. 2)
             $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
 
-            $addVideoButton.on('click', function(e) {
+            $addVideoButton.on('click', function (e) {
                 // add a new tag form (see next code block)
                 addVideoForm($collectionHolder2, $newLinkLi2);
             });

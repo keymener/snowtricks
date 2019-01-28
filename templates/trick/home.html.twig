@@ -46,8 +46,13 @@
                     <a href="#tricks"><i class="fas fa-arrow-up"></i></a>
                 </div>
             {% else %}
+                <form action="{{ path('trick_more', {'maxResult': maxResult }) }}" method="post">
+                    <input type="hidden" name="token" value="{{ csrf_token('more_tricks') }}"/>
+                    <button type="submit" class="btn btn-info">Charger plus</button>
 
-                <a href="{{ path('trick_more') }}" class="btn btn-primary">Charger plus</a>
+                </form>
+
+
             {% endif %}
 
 
