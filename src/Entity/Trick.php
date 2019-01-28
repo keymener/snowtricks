@@ -38,7 +38,7 @@ class Trick
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="trick", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $images;
 
@@ -52,11 +52,6 @@ class Trick
      * @ORM\ManyToOne(targetEntity="TrickGroup")
      */
     private $trickGroup;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     */
-    private $firstImage;
 
 
     public function __construct()
