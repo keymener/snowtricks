@@ -17,9 +17,7 @@ class ImageType extends AbstractType
          ->add('file', FileType::class, [
              'label' => false,
              'required' => true,
-             'constraints' => [
-                 new File(),
-             ]
+
          ])
          ;
     }

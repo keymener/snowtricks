@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use App\Entity\Trick;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImageController extends AbstractController
 {
     /**
-     * @Route("/image/new", name="new_image")
+     * @Route("/image/new", name="image_new")
      */
     public function newImage(Request $request)
     {
@@ -21,14 +22,14 @@ class ImageController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
 
-            $this->addFlash('success', 'L\'image a bien été ajoutée' );
+            $this->addFlash('success', 'L\'image a bien été ajoutée');
             $this->redirectToRoute('new_image');
 
 
@@ -38,4 +39,6 @@ class ImageController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
 }
