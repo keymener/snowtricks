@@ -39,6 +39,7 @@ class Trick
 
     /**
      * @ORM\OneToMany(targetEntity="Image", mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
 
@@ -52,6 +53,12 @@ class Trick
      * @ORM\ManyToOne(targetEntity="TrickGroup")
      */
     private $trickGroup;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
+    private $firstImage;
 
 
     public function __construct()
@@ -188,8 +195,6 @@ class Trick
 
         return $this;
     }
-
-
 
 
 }

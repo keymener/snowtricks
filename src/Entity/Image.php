@@ -32,17 +32,12 @@ class Image
     private $trick;
 
     /**
-     *@Assert\Image
-    (mimeTypes = {"image/jpg", "image/jpeg", "image/gif", "image/png"},
+     *@Assert\Image(mimeTypes = {"image/jpg", "image/jpeg", "image/gif", "image/png"},
     mimeTypesMessage = "Seuls sont accéptés les images au format JPG, GIF ou PNG.",
-    maxSize="5000k")
+    maxSize="2000k")
      */
     private $file;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isFirst;
 
     /**
      * @return mixed
@@ -85,18 +80,6 @@ class Image
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
-
-        return $this;
-    }
-
-    public function getIsFirst(): ?bool
-    {
-        return $this->isFirst;
-    }
-
-    public function setIsFirst(bool $isFirst): self
-    {
-        $this->isFirst = $isFirst;
 
         return $this;
     }
