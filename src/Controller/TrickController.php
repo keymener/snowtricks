@@ -16,7 +16,7 @@ class TrickController extends AbstractController
 
     private $em;
 
-    const TRICKS_PER_PAGE = 3;
+    const TRICKS_PER_PAGE = 15;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -85,7 +85,7 @@ class TrickController extends AbstractController
 
             $this->addFlash('success', 'La figure a bien été enregistrée');
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('trick_home');
 
         }
 
