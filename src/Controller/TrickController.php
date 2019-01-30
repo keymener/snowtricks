@@ -31,31 +31,33 @@ class TrickController extends AbstractController
         $tricks = $this->getDoctrine()->getRepository(Trick::class)->getTricks(self::TRICKS_PER_PAGE);
         return $this->render('trick/home.html.twig', [
             'tricks' => $tricks,
-            'maxResult' => self::TRICKS_PER_PAGE,
+            'maxResult' => self::TRICKS_PER_PAGE + self::TRICKS_PER_PAGE,
 
         ]);
     }
 
     /**
-     * @Route("/view-{maxResult}", name="trick_more", methods={"GET|POST"})
+     * @Route("/view-{maxResult}", name="trick_more", methods={"GET"})
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function more(int $maxResult, Request $request)
+    public function more(int $maxResult)
     {
 
-        $submitedToken = $request->request->get('token');
-
-        if ($this->isCsrfTokenValid('more_tricks', $submitedToken)) {
-
-            $tricks = $this->getDoctrine()->getRepository(Trick::class)->getTricks($maxResult);
-
-            return $this->render('trick/home.html.twig', [
-                'tricks' => $tricks,
-                'maxResult' => $maxResult + self::TRICKS_PER_PAGE,
-
-            ]);
+        if ($maxResult < self::TRICKS_PER_PAGE) {
+            $maxResult = self::TRICKS_PER_PAGE;
         }
-        return $this->redirectToRoute('trick_home');
+
+        $tricks = $this->getDoctrine()->getRepository(Trick::class)->getTricks($maxResult);
+
+
+
+
+        return $this->render('trick/home.html.twig', [
+            'tricks' => $tricks,
+            'maxResult' => $maxResult + self::TRICKS_PER_PAGE,
+
+        ]);
+
     }
 
 

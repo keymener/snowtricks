@@ -14,7 +14,7 @@
                 </div>
                 <div class="row justify-content-end align-items-end">
                     <div class="narrow-down mx-3 d-flex justify-content-end">
-                        <a href="#tricks"><i class="fas fa-arrow-down"></i></a>
+                        <a href="#trick"><i class="fas fa-arrow-down"></i></a>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,9 @@
 
     <section>
         <div class="tricks" id="tricks">
+            {% set anchor = 1 %}
             {% for trick in tricks %}
-                <div class="ticket m-3">
+                <div class="ticket m-3" id="{{ anchor }}">
                     <div class="ticket-top">
                         <img class="ticket-image" src="" alt="Image à la une">
                     </div>
@@ -38,6 +39,7 @@
                         <div class="delete"><i class="fas fa-trash-alt"></i></div>
                     </div>
                 </div>
+                {% set anchor = anchor + 1  %}
             {% endfor %}
         </div>
         <div class="d-flex {% if more is defined %}justify-content-end{% else %}justify-content-center{% endif %}">
@@ -46,12 +48,8 @@
                     <a href="#tricks"><i class="fas fa-arrow-up"></i></a>
                 </div>
             {% else %}
-                <form action="{{ path('trick_more', {'maxResult': maxResult }) }}" method="post">
-                    <input type="hidden" name="token" value="{{ csrf_token('more_tricks') }}"/>
-                    <button type="submit" class="btn btn-info">Charger plus</button>
 
-                </form>
-
+                <a class="btn btn-info" href="{{ path('trick_more', {'maxResult': maxResult }) }}#{{ anchor }}">Charger plus</a>
 
             {% endif %}
 
