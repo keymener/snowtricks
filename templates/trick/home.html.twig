@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+
+    <header>
+        <div class="container-fluid h-100">
+            <div class="h-100 d-flex flex-column justify-content-between">
+                <div class="row "></div>
+                <div class="row  justify-content-center">
+                    <h1>Learn Tricks</h1>
+                </div>
+                <div class="row justify-content-end align-items-end">
+                    <div class="narrow-down mx-3 d-flex justify-content-end">
+                        <a href="#trick"><i class="fas fa-arrow-down"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </header>
+
+    <section>
+        <div class="tricks" id="tricks">
+            {% set anchor = 1 %}
+            {% for trick in tricks %}
+                <div class="ticket m-3" id="{{ anchor }}">
+                    <div class="ticket-top">
+                        <img class="ticket-image" src="" alt="Image à la une">
+                    </div>
+                    <div class="ticket-footer">
+                        <div class="name">
+                            {{ trick.name }}
+                        </div>
+                        <div class="edit"><i class="fas fa-pencil-alt"></i></div>
+                        <div class="delete"><i class="fas fa-trash-alt"></i></div>
+                    </div>
+                </div>
+                {% set anchor = anchor + 1  %}
+            {% endfor %}
+        </div>
+        <div class="d-flex {% if more is defined %}justify-content-end{% else %}justify-content-center{% endif %}">
+            {% if more is defined %}
+                <div class="narrow-down">
+                    <a href="#tricks"><i class="fas fa-arrow-up"></i></a>
+                </div>
+            {% else %}
+
+                <a class="btn btn-info" href="{{ path('trick_more', {'maxResult': maxResult }) }}#{{ anchor }}">Charger plus</a>
+
+            {% endif %}
+
+
+        </div>
+    </section>
+
+
+    <footer>
+
+        <div class="copyright">Copyright Snowtricks 2019</div>
+    </footer>
+
+
+{% endblock %}

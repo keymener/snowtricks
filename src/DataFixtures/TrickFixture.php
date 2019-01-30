@@ -8,7 +8,9 @@ use App\Entity\TrickGroup;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
+
 
 class TrickFixture extends Fixture
 {
@@ -24,6 +26,7 @@ class TrickFixture extends Fixture
             $trick = new Trick();
             $trick->setName('Figure' . $i);
             $trick->setDate(new \DateTime());
+
             $trick->setDescription('
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
@@ -33,18 +36,25 @@ class TrickFixture extends Fixture
             
             ');
 
+
             $group = new TrickGroup();
             $group->setName('Mon groupe ' . $i);
+
+
 
 
             $video = new Video();
             $video->setUrl('https://www.youtube.com/watch?v=W853WVF5AqI');
 
 
+
+
             $trick->addVideo($video);
             $trick->setTrickGroup($group);
 
             $manager->persist($group);
+
+
 
             $manager->persist($video);
             $manager->persist($trick);

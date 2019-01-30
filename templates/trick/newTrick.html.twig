@@ -16,6 +16,8 @@
 
 {% block javascripts %}
 
+    {{ parent() }}
+
     <script>
         //images
 
@@ -24,6 +26,9 @@
         // setup an "add a tag" link
         var $addImageButton = $('<button type="button" class="add_image_link btn btn-info">Ajouter</button>');
         var $newLinkLi = $('<li class="list-group-item"></li>').append($addImageButton);
+
+    </script>
+    <script>
 
         jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
@@ -67,6 +72,8 @@
             $newLinkLi.before($newFormLi);
         }
 
+    </script>
+    <script>
 
         // videos
 

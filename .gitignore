@@ -20,4 +20,5 @@
 /.idea
 .env
 
-/public/uploads/
+/public/uploads/images/*
+
