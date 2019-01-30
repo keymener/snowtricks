@@ -12,9 +12,14 @@
 
         <div class="col-md-4">
             <h4>Images</h4>
+
+            {{ form_row(form.firstImage) }}
+
+
+            Autres images
             <ul class="images list-group" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
                 {% for image in form.images %}
-                    <li class="list-group-item">{{ form_row(image.url) }}</li>
+                    <li class="list-group-item">{{ form_row(image.file) }}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -30,7 +35,7 @@
 
         {{ form_rest(form) }}
 
-        <button class="btn btn-info">Valider</button>
+        <button class="btn btn-info">Enregistrer</button>
         {{ form_end(form) }}
 
     </div>

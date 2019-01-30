@@ -11,7 +11,8 @@
             <th>Figure</th>
             <th>Groupe</th>
             <th>Description</th>
-            <th>Images</th>
+            <th>Images a la une</th>
+            <th>Autres Images</th>
             <th>Videos</th>
 
         </tr>
@@ -25,16 +26,17 @@
                 <td>{{ trick.trickGroup.name }}</td>
                 <td>{{ trick.description }}</td>
                 <td>
-                    <ul>
+                    {% if trick.firstImage is null %}
+                        Pas d'image à la une
+                    {% else %}
+                        {{ trick.firstImage.name }}
+                    {% endif %}
 
-                        {% for image in trick.images %}
-
-                            <li>
-                                {{ image.url }} {{ image.alt }}
-                            </li>
-
-                        {% endfor %}
-                    </ul>
+                </td>
+                <td>
+                    {% for image in trick.images %}
+                        {{ image.name }}
+                    {% endfor %}
                 </td>
                 <td>
                     <ul>

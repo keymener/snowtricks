@@ -19,13 +19,17 @@
     {{ parent() }}
 
     <script>
+        //images
+
         var $collectionHolder;
 
         // setup an "add a tag" link
-        var $addImageButton = $('<button type="button" class="add_image_link btn btn-info">Nouvelle image</button>');
+        var $addImageButton = $('<button type="button" class="add_image_link btn btn-info">Ajouter</button>');
         var $newLinkLi = $('<li class="list-group-item"></li>').append($addImageButton);
+
     </script>
     <script>
+
         jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
             $collectionHolder = $('ul.images');
@@ -67,14 +71,16 @@
             var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
             $newLinkLi.before($newFormLi);
         }
+
     </script>
     <script>
+
         // videos
 
         var $collectionHolder2;
 
         // setup an "add a tag" link
-        var $addVideoButton = $('<button type="button" class="add_video_link btn btn-info">Nouvelle video</button>');
+        var $addVideoButton = $('<button type="button" class="add_video_link btn btn-info">Ajouter</button>');
         var $newLinkLi2 = $('<li class="list-group-item"></li>').append($addVideoButton);
 
         jQuery(document).ready(function () {
@@ -118,5 +124,28 @@
             var $newFormLi2 = $('<li class="list-group-item"></li>').append(newForm2);
             $newLinkLi2.before($newFormLi2);
         }
+
+
     </script>
+    <script>
+        //custom-file-label
+
+        $('.custom-file input').change(function (e) {
+            var files = [];
+            for (var i = 0; i < $(this)[0].files.length; i++) {
+                files.push($(this)[0].files[i].name);
+            }
+            $(this).next('.custom-file-label').html(files.join(', '));
+        });
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Parcourir";
+        }
+    </style>
+
 {% endblock %}

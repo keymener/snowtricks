@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,12 +84,17 @@ class TrickController extends AbstractController
 
 
             $this->addFlash('success', 'La figure a bien été enregistrée');
+
             return $this->redirectToRoute('home');
 
         }
 
         return $this->render('trick/newTrick.html.twig', [
             'form' => $form->createView(),
+
         ]);
     }
+
+
+
 }

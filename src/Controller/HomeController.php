@@ -13,10 +13,9 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-       $tricks = $this->getDoctrine()->getRepository(Trick::class)->findAll();
+       $tricks = $this->getDoctrine()->getRepository(Trick::class)->findBy([], ['id' => 'DESC']);
 
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
             'tricks' => $tricks
         ]);
     }
