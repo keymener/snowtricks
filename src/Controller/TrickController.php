@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
-use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,8 +50,6 @@ class TrickController extends AbstractController
         $tricks = $this->getDoctrine()->getRepository(Trick::class)->getTricks($maxResult);
 
 
-
-
         return $this->render('trick/home.html.twig', [
             'tricks' => $tricks,
             'maxResult' => $maxResult + self::TRICKS_PER_PAGE,
@@ -95,6 +91,19 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * Show a trick
+     * @Route("/trick/{id}", name="trick_view", methods={"GET"})
+     * @param Trick $trick
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function view(Trick $trick)
+    {
+        return $this->render('trick/view.html.twig', [
+            'trick' =>$trick
+
+        ]);
+    }
 
 
 }
