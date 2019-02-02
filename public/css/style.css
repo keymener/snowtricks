@@ -91,6 +91,25 @@ footer {
     margin-left: 2em;
 }
 
-.clax{
- border: 3px solid black;
+.clax {
+    border: 3px solid black;
 }
+
+.trick-first-image {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*width: 50%;*/
+
+}
+
+.trick-title {
+    position: absolute;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-weight: bold;
+
+}
+
+
