@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Service\DefaultImageSelector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +63,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/new", name="trick_new")
      */
-    public function newTrick(Request $request)
+    public function newTrick(Request $request, DefaultImageSelector $defaultImageSelector)
     {
 
         $trick = new Trick();
@@ -72,7 +73,14 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //if no first image was selected then set the default image to firstimage
+            if(null === $trick->getFirstImage()){
 
+                $trick->setFirstImage($defaultImageSelector->getDefaultImage());
+
+            }
+
+            //set the current datetime
             $trick->setDate(new \DateTime());
 
             $this->em->persist($trick);

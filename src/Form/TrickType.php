@@ -22,7 +22,9 @@ class TrickType extends AbstractType
 
             ])
             ->add('description', TextareaType::class)
-            ->add('firstImage', ImageType::class)
+            ->add('firstImage', ImageType::class, [
+                'required' => false
+            ])
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageType::class,
                 'prototype' => true,

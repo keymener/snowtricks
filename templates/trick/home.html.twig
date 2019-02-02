@@ -33,7 +33,7 @@
                         <a href="{{ path('trick_view', {'id': trick.id}) }}">
 
                         <img class="ticket-image"
-                             src="{% if trick.firstImage is null %}{{ asset('uploads/images/default.jpeg') }}{% else %}{{ asset('uploads/images/'~trick.firstImage.name|e) }}{% endif %}"
+                             src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
                              alt="Image à la une">
                         </a>
                     </div>
