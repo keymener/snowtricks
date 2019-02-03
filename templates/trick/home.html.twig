@@ -30,16 +30,18 @@
 
                 <div class="ticket m-3" id="{{ anchor }}">
                     <div class="ticket-top">
-                        <a href="{{ path('trick_view', {'id': trick.id}) }}">
+
 
                         <img class="ticket-image"
                              src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
                              alt="Image à la une">
-                        </a>
+
                     </div>
                     <div class="ticket-footer">
                         <div class="name">
-                            {{ trick.name }}
+                            <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
+                                {{ trick.name }}
+                            </a>
                         </div>
                         <div class="edit"><i class="fas fa-pencil-alt"></i></div>
                         <div class="delete"><i class="fas fa-trash-alt"></i></div>
