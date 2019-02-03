@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 class TrickFixture extends Fixture
@@ -21,7 +22,8 @@ class TrickFixture extends Fixture
      */
     private $defaultImageSelector;
 
-    public function __construct(DefaultImageSelector $defaultImageSelector){
+    public function __construct(DefaultImageSelector $defaultImageSelector)
+    {
 
         $this->defaultImageSelector = $defaultImageSelector;
     }
@@ -52,20 +54,16 @@ class TrickFixture extends Fixture
             $group->setName('Mon groupe ' . $i);
 
 
-
-
             $video = new Video();
-            $video->setUrl('https://www.youtube.com/watch?v=W853WVF5AqI');
+            $video->setUrl('https://www.youtube.com/embed/W853WVF5AqI');
 
 
             $trick->setFirstImage($this->defaultImageSelector->getDefaultImage());
-
 
             $trick->addVideo($video);
             $trick->setTrickGroup($group);
 
             $manager->persist($group);
-
 
 
             $manager->persist($video);
