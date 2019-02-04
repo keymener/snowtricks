@@ -28,7 +28,10 @@ php bin/console doctrine:database:create
 ```
 php bin/console doctrine:migrations:migrate
 ```
-6. Load data fixtures to the database
+
+6. Add a random image "default.jpeg" into /public/uploads/images
+
+7. Load data fixtures to the database
 ```
 php bin/console doctrine:fixtures:load
 ```

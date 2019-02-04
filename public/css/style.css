@@ -12,19 +12,58 @@ body {
     background-color: #f8f9fa;
 }
 
-header {
+@media (min-width: 577px) {
+    .my-view-header {
+        background-image: url("/img/snowboard-cliff-backflip.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
+
+
+    }
+
+    .view-content{
+
+        margin-top: 90px;
+        box-shadow: rgba(0, 0, 0, 0.58) 0px 0px 20px;
+    }
+
+    .modal-image{
+        width: 100%;
+    }
+
+
+
+}
+
+@media (max-width: 576px){
+
+    .medias{
+        display: none;
+    }
+
+    .view-content{
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+}
+
+
+.my-main-header{
     background-image: url("/img/snowboard-cliff-backflip.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
     width: 100%;
 
-    color: #456f7a;
+    color: white;
+    text-shadow: rgba(0, 0, 0, 0.58) 0px 0px 20px;
     text-transform: uppercase;
     letter-spacing: 0.3em;
 
 }
-
 section {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -42,11 +81,14 @@ footer {
     font-size: 0.8em;
 }
 
+
 .navbar-brand {
     font-weight: bold;
     text-transform: uppercase;
 
 }
+
+
 
 .narrow-down a {
 
@@ -84,13 +126,75 @@ footer {
 .ticket-image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: 0.3s ease;
 
+}
+
+.ticket-image:hover{
+    transform: scale(1.1);
 }
 
 .copyright {
     margin-left: 2em;
 }
 
-.clax{
- border: 3px solid black;
+.clax {
+    border: 3px solid black;
+}
+
+.trick-first-image {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+
+}
+
+.first-image-view {
+    width: 100%;
+    object-fit: cover;
+
+
+
+}
+
+.trick-title {
+
+    position: absolute;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+
+
+    color: white;
+    font-weight: bold;
+
+    text-shadow: rgba(0, 0, 0, 1) 0px 0px 20px;
+
+}
+
+.links {
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+.view-content {
+    position: absolute;
+    background-color: #f8f9fa;
+
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+
+
 }

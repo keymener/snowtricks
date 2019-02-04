@@ -5,12 +5,12 @@
 {% block body %}
 
 
-    <header>
+    <header class="my-main-header">
         <div class="container-fluid h-100">
             <div class="h-100 d-flex flex-column justify-content-between">
                 <div class="row "></div>
                 <div class="row  justify-content-center">
-                    <h1>Learn Tricks</h1>
+                    <h1 class="main-title">Learn Tricks</h1>
                 </div>
                 <div class="row justify-content-end align-items-end">
                     <div class="narrow-down mx-3 d-flex justify-content-end">
@@ -29,14 +29,21 @@
             {% for trick in tricks %}
 
                 <div class="ticket m-3" id="{{ anchor }}">
-                    <div class="ticket-top">
-                        <img class="ticket-image"
-                             src="{% if trick.firstImage is null %}{{ asset('uploads/images/default.jpeg') }}{% else %}{{ asset('uploads/images/'~trick.firstImage.name|e) }}{% endif %}"
-                             alt="Image à la une">
-                    </div>
+                    <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
+                        <div class="ticket-top">
+
+
+                            <img class="ticket-image"
+                                 src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
+                                 alt="Image à la une">
+
+                        </div>
+                    </a>
                     <div class="ticket-footer">
                         <div class="name">
-                            {{ trick.name }}
+                            <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
+                                {{ trick.name }}
+                            </a>
                         </div>
                         <div class="edit"><i class="fas fa-pencil-alt"></i></div>
                         <div class="delete"><i class="fas fa-trash-alt"></i></div>
