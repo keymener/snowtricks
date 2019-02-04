@@ -6,26 +6,33 @@
 
 
     <div class="my-view-header">
-        <div class="container view-content ">
+    <div class="container view-content ">
 
 
-            <div class="row justify-content-center">
-                <div class="trick-first-image">
-                    <h3 class="trick-title">{{ trick.name }}</h3>
-                    <img class="first-image-view" src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
-                         alt="First image">
-                </div>
+        <div class="row justify-content-center">
+            <div class="trick-first-image">
+                <h3 class="trick-title">{{ trick.name }}</h3>
+                <img class="first-image-view" src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
+                     alt="First image">
             </div>
+        </div>
+        <div class="row justify-content-center">
+            <button class="btn btn-info mt-1 d-block d-sm-none" type="button" data-toggle="collapse"
+                    data-target="#collapseMedias"
+                    aria-expanded="false" aria-controls="collapseMedias">Afficher les médias
+            </button>
+        </div>
 
+        <div class="row collapse dont-collapse-sm" id="collapseMedias">
+            <div class="d-flex justify-content-center flex-wrap">
 
-            <div class="row medias">
                 {% for image in trick.images %}
                     <div class="ticket m-3">
                         <div class="ticket-top">
                             <a href="#" data-toggle="modal" data-target="#imageModal{{ image.id }}">
-                            <img class="ticket-image"
-                                 src="{{ asset('uploads/images/'~image.name|e) }}"
-                                 alt="Image à la une">
+                                <img class="ticket-image"
+                                     src="{{ asset('uploads/images/'~image.name|e) }}"
+                                     alt="Image à la une">
                             </a>
 
                             <!-- Modal -->
@@ -36,7 +43,8 @@
 
                                         <div class="modal-body">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <img class="modal-image" src="{{ asset('uploads/images/'~image.name|e) }}" alt="Image agrandie">
+                                            <img class="modal-image" src="{{ asset('uploads/images/'~image.name|e) }}"
+                                                 alt="Image agrandie">
                                         </div>
                                     </div>
                                 </div>
@@ -53,19 +61,20 @@
 
                 {% endfor %}
             </div>
-            <div class="row">
-                <div class="my-3">
-                    {{ trick.description }}
-                </div>
+        </div>
+        <div class="row">
+            <div class="my-3">
+                {{ trick.description }}
             </div>
-            <div class="row justify-content-center">
-                <span class="badge badge-info mx-1">Date de création: {{ trick.date | date('d/m/y', 'Europe/Paris') }}</span>
-                <span class="badge badge-info mx-1">Groupe: {{ trick.trickGroup.name }}</span>
-
-            </div>
+        </div>
+        <div class="row justify-content-center">
+            <span class="badge badge-info mx-1">Date de création: {{ trick.date | date('d/m/y', 'Europe/Paris') }}</span>
+            <span class="badge badge-info mx-1">Groupe: {{ trick.trickGroup.name }}</span>
 
         </div>
+
     </div>
+    {#</div>#}
 
 
 

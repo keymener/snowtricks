@@ -33,15 +33,17 @@ body {
         width: 100%;
     }
 
+    .collapse.dont-collapse-sm {
+        display: block;
+        height: auto !important;
+        visibility: visible;
+    }
 
 
 }
 
 @media (max-width: 576px){
 
-    .medias{
-        display: none;
-    }
 
     .view-content{
         padding-left: 30px;
