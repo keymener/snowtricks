@@ -54,12 +54,6 @@ class Trick
      */
     private $trickGroup;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
-    private $firstImage;
-
 
     public function __construct()
     {

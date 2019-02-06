@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
-use App\Service\DefaultImageSelector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +62,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/new", name="trick_new")
      */
-    public function newTrick(Request $request, DefaultImageSelector $defaultImageSelector)
+    public function newTrick(Request $request)
     {
 
         $trick = new Trick();
@@ -73,12 +72,6 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //if no first image was selected then set the default image to firstimage
-            if(null === $trick->getFirstImage()){
-
-                $trick->setFirstImage($defaultImageSelector->getDefaultImage());
-
-            }
 
             //set the current datetime
             $trick->setDate(new \DateTime());
@@ -108,8 +101,36 @@ class TrickController extends AbstractController
     public function view(Trick $trick)
     {
         return $this->render('trick/view.html.twig', [
-            'trick' =>$trick
+            'trick' => $trick
 
+        ]);
+    }
+
+    /**
+     * Edit a trick
+     * @Route("admin/trick/edit/{id}", name="trick_edit", methods={"GET|POST"})
+     * @param Trick $trick
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function edit(Trick $trick, Request $request)
+    {
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->em->flush();
+
+            $this->addFlash('success', 'La figure a bien été modifiée');
+
+
+        }
+
+        return $this->render('trick/edit.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView()
         ]);
     }
 

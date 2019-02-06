@@ -2,31 +2,17 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Image;
+
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use App\Entity\Video;
-use App\Service\DefaultImageSelector;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 
 class TrickFixture extends Fixture
 {
-
-    /**
-     * @var DefaultImageSelector
-     */
-    private $defaultImageSelector;
-
-    public function __construct(DefaultImageSelector $defaultImageSelector)
-    {
-
-        $this->defaultImageSelector = $defaultImageSelector;
-    }
 
 
     public function load(ObjectManager $manager)
@@ -57,8 +43,6 @@ class TrickFixture extends Fixture
             $video = new Video();
             $video->setUrl('https://www.youtube.com/embed/W853WVF5AqI');
 
-
-            $trick->setFirstImage($this->defaultImageSelector->getDefaultImage());
 
             $trick->addVideo($video);
             $trick->setTrickGroup($group);

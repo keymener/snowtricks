@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Snowtricks{% endblock %}
 
 {% block body %}
 
@@ -34,7 +34,14 @@
 
 
                             <img class="ticket-image"
-                                 src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
+                                 src="{% if trick.images.first %}
+
+{{ asset('uploads/images/'~trick.images.first.name|e) }}
+
+{% else %}
+
+{{ asset('uploads/images/'~default_image|e) }}
+{% endif %}"
                                  alt="Image à la une">
 
                         </div>
@@ -45,7 +52,10 @@
                                 {{ trick.name }}
                             </a>
                         </div>
-                        <div class="edit"><i class="fas fa-pencil-alt"></i></div>
+
+                        <a href="{{ path('trick_edit', {'id': trick.id}) }}"><i class="fas fa-pencil-alt"></i></a>
+
+
                         <div class="delete"><i class="fas fa-trash-alt"></i></div>
                     </div>
                 </div>
