@@ -28,19 +28,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Service\FileUploader:
+    App\Service\FileManager:
         arguments:
             $uploadDirectory: '%images_directory%'
 
-    App\Service\FileDeleter:
-        arguments:
-            $uploadDirectory: '%images_directory%'
-
-    App\EventListener\ImageUploadListener:
+    App\EventSubscriber\ImageSubscriber:
         tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
-
-    App\EventListener\ImageDeleteListener:
-        tags:
-            - { name: doctrine.event_listener, event: postRemove }
+        - { name: doctrine.event_subscriber, connection: default }

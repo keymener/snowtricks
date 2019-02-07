@@ -54,6 +54,11 @@ class Trick
      */
     private $trickGroup;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateUpdate;
+
 
     public function __construct()
     {
@@ -186,6 +191,18 @@ class Trick
     public function setFirstImage(?Image $firstImage): self
     {
         $this->firstImage = $firstImage;
+
+        return $this;
+    }
+
+    public function getDateUpdate(): ?\DateTimeInterface
+    {
+        return $this->dateUpdate;
+    }
+
+    public function setDateUpdate(?\DateTimeInterface $dateUpdate): self
+    {
+        $this->dateUpdate = $dateUpdate;
 
         return $this;
     }

@@ -121,6 +121,10 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
+
+            $trick->setDateUpdate(new \DateTime());
+
             $this->em->flush();
 
             $this->addFlash('success', 'La figure a bien été modifiée');

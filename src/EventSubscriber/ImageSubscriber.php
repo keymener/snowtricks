@@ -1,31 +1,60 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: keyme
+ * Date: 07/02/2019
+ * Time: 23:30
+ */
 
-namespace App\EventListener;
+namespace App\EventSubscriber;
+
 
 use App\Entity\Image;
-use App\Service\FileUploader;
+use App\Service\FileManager;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageUploadListener
+class ImageSubscriber implements EventSubscriber
 {
+
     private $uploader;
 
-    public function __construct(FileUploader $uploader)
+    public function __construct(FileManager $uploader)
     {
         $this->uploader = $uploader;
     }
 
+    public function getSubscribedEvents()
+    {
+
+        return [
+            Events::postRemove,
+            Events::prePersist,
+            Events::preUpdate,
+        ];
+    }
+
+    public function postRemove(LifecycleEventArgs $args)
+    {
+          /** @var Image $entity */
+        $entity = $args->getEntity();
+        $this->uploader->remove($entity->getName());
+    }
+
     public function prePersist(LifecycleEventArgs $args)
     {
+
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
+        dump($args);
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
