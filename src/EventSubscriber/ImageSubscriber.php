@@ -47,6 +47,7 @@ class ImageSubscriber implements EventSubscriber
             return;
         }
 
+
         $this->uploader->remove($entity->getName());
     }
 
@@ -60,7 +61,6 @@ class ImageSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
 
-        dump($args);
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }

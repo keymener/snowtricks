@@ -32,8 +32,11 @@ class ImageController extends AbstractController
     public function deleteImage(Request $request, Image $image)
     {
         if ($this->isCsrfTokenValid('delete-image', $request->request->get('_token'))) {
+
+            $image->getTrick()->setDateUpdate(new \DateTime());
             $this->em->remove($image);
             $this->em->flush();
+
 
             $this->addFlash('success', "L'image a bien été supprimée");
         }
