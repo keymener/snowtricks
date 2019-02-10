@@ -11,6 +11,7 @@
 
         <div class="row justify-content-center">
             <div class="trick-first-image">
+                <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i class="fas fa-pencil-alt"></i></a>
                 <h3 class="trick-title">{{ trick.name }}</h3>
                 <img class="first-image-view" src="
 {% if trick.images.first %}
