@@ -60,6 +60,7 @@ class ImageSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
 
+        dump($args);
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
