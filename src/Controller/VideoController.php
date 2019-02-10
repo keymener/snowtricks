@@ -3,16 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Image;
-use App\Entity\Trick;
+use App\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ImageController extends AbstractController
+class VideoController extends AbstractController
 {
-
-
     /**
      * @var EntityManagerInterface
      */
@@ -25,23 +24,22 @@ class ImageController extends AbstractController
 
 
     /**
-     * @Route("/admin/image-delete/{id}", name="image_delete", methods="DELETE")
+     * @Route("/admin/video-delete/{id}", name="video_delete", methods="DELETE")
      * @param Request $request
-     * @param Image $image
+     * @param Video $video
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteImage(Request $request, Image $image)
+    public function deleteImage(Request $request, Video $video)
     {
-        if ($this->isCsrfTokenValid('delete-image', $request->request->get('_token'))) {
-            $this->em->remove($image);
+        if ($this->isCsrfTokenValid('delete-video', $request->request->get('_token'))) {
+            $this->em->remove($video);
             $this->em->flush();
 
-            $this->addFlash('success', "L'image a bien été supprimée");
+            $this->addFlash('success', "La video a bien été supprimée");
         }
 
         return $this->redirectToRoute('trick_edit', [
-            'id' => $image->getTrick()->getId(),
+            'id' => $video->getTrick()->getId(),
         ]);
     }
-
-
 }

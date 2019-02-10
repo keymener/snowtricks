@@ -40,8 +40,13 @@ class ImageSubscriber implements EventSubscriber
 
     public function postRemove(LifecycleEventArgs $args)
     {
-          /** @var Image $entity */
+        /** @var Image $entity */
         $entity = $args->getEntity();
+
+        if (!$entity instanceof Image) {
+            return;
+        }
+
         $this->uploader->remove($entity->getName());
     }
 
@@ -54,7 +59,7 @@ class ImageSubscriber implements EventSubscriber
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
-        dump($args);
+
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }

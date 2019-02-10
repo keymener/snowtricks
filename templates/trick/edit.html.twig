@@ -45,8 +45,13 @@
                 </div>
 
                 <div class="ticket-footer">
-
-                    <div class="delete"><i class="fas fa-trash-alt"></i></div>
+                    <form method="post"
+                          action="{{ path('video_delete', {'id': video.id }) }}"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette video ?');">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-video') }}"/>
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
                 </div>
             </div>
 
