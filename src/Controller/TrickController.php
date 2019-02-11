@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Form\TrickEditType;
 use App\Form\TrickType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,7 +116,7 @@ class TrickController extends AbstractController
      */
     public function edit(Trick $trick, Request $request)
     {
-        $form = $this->createForm(TrickType::class, $trick);
+        $form = $this->createForm(TrickEditType::class, $trick);
 
         $form->handleRequest($request);
 
@@ -131,9 +132,10 @@ class TrickController extends AbstractController
 
         }
 
-        return $this->render('trick/edit.html.twig', [
+        return $this->render('trick/view.html.twig', [
             'trick' => $trick,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'edit' => true
         ]);
     }
 

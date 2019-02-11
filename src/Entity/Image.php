@@ -38,6 +38,13 @@ class Image
      */
     private $file;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateUpdate;
+
+
+
 
     /**
      * @return mixed
@@ -80,6 +87,18 @@ class Image
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
+
+        return $this;
+    }
+
+    public function getDateUpdate(): ?\DateTimeInterface
+    {
+        return $this->dateUpdate;
+    }
+
+    public function setDateUpdate(?\DateTimeInterface $dateUpdate): self
+    {
+        $this->dateUpdate = $dateUpdate;
 
         return $this;
     }

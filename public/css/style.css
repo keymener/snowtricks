@@ -20,16 +20,15 @@ body {
         height: 100%;
         width: 100%;
 
-
     }
 
-    .view-content{
+    .view-content {
 
         margin-top: 90px;
         box-shadow: rgba(0, 0, 0, 0.58) 0px 0px 20px;
     }
 
-    .modal-image{
+    .modal-image {
         width: 100%;
     }
 
@@ -39,18 +38,7 @@ body {
         visibility: visible;
     }
 
-
-}
-
-@media (max-width: 576px){
-
-
-    .view-content{
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-
-    .trick-edit{
+    .trick-edit {
         position: absolute;
         top: 20px;
         right: 20px;
@@ -60,8 +48,24 @@ body {
 
 }
 
+@media (max-width: 576px) {
 
-.my-main-header{
+    .view-content {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .trick-edit {
+        position: absolute;
+        top: 100px;
+        right: 40px;
+        color: white;
+        text-shadow: rgba(0, 0, 0, 1) 0px 0px 20px;
+    }
+
+}
+
+.my-main-header {
     background-image: url("/img/snowboard-cliff-backflip.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -74,6 +78,7 @@ body {
     letter-spacing: 0.3em;
 
 }
+
 section {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -91,14 +96,11 @@ footer {
     font-size: 0.8em;
 }
 
-
 .navbar-brand {
     font-weight: bold;
     text-transform: uppercase;
 
 }
-
-
 
 .narrow-down a {
 
@@ -142,7 +144,7 @@ footer {
 
 }
 
-.ticket-image:hover{
+.ticket-image:hover {
     transform: scale(1.1);
 }
 
@@ -171,8 +173,6 @@ footer {
     width: 100%;
     object-fit: cover;
 
-
-
 }
 
 .trick-title {
@@ -181,7 +181,6 @@ footer {
     text-transform: uppercase;
     letter-spacing: 0.3em;
 
-
     color: white;
     font-weight: bold;
 
@@ -189,17 +188,12 @@ footer {
 
 }
 
-.trick-edit{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    color: white;
-    text-shadow: rgba(0, 0, 0, 1) 0px 0px 20px;
-}
+
 
 .links {
     text-transform: uppercase;
     font-weight: bold;
+    color: #212529;
 
 }
 
@@ -214,5 +208,12 @@ footer {
     margin-left: auto;
     margin-right: auto;
 
+}
 
+.myDeleteButton {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+.myDeleteButton:hover {
+    color: red;
 }

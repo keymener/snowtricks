@@ -62,6 +62,15 @@ class ImageSubscriber implements EventSubscriber
     {
 
         $entity = $args->getEntity();
+
+        if (!$entity instanceof Image) {
+            return;
+        }
+
+        //delete the the old file
+        $this->uploader->remove($entity->getName());
+
+        //uplolad the new file
         $this->uploadFile($entity);
     }
 

@@ -36,12 +36,12 @@
                             <img class="ticket-image"
                                  src="{% if trick.images.first %}
 
-{{ asset('uploads/images/'~trick.images.first.name|e) }}
+                            {{ asset('uploads/images/'~trick.images.first.name|e) }}
 
-{% else %}
+                            {% else %}
 
-{{ asset('uploads/images/'~default_image|e) }}
-{% endif %}"
+                            {{ asset('uploads/images/'~default_image|e) }}
+                            {% endif %}"
                                  alt="Image à la une">
 
                         </div>
@@ -53,7 +53,7 @@
                             </a>
                         </div>
 
-                        <a href="{{ path('trick_edit', {'id': trick.id}) }}"><i class="fas fa-pencil-alt"></i></a>
+                        <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i class="fas fa-pencil-alt"></i></a>
 
 
                         <div class="delete"><i class="fas fa-trash-alt"></i></div>
