@@ -1,0 +1,197 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une figure{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1>Modifier une figure</h1>
+
+
+    {{ include('trick/_form.html.twig') }}
+
+    <a class="btn btn-primary" href="{{ path('trick_view', {'id': trick.id}) }}">Voir Trick</a>
+    <div class="row">
+
+
+        {% for image in trick.images %}
+            <div class="ticket m-1">
+                <div class="ticket-top">
+                    <img class="ticket-image"
+                         src="{{ asset('uploads/images/'~image.name|e) }}"
+                         alt="Image de figure">
+                </div>
+
+                <div class="ticket-footer">
+
+                    <form method="post"
+                          action="{{ path('image_delete', {'id': image.id }) }}"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette image ?');">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-image') }}"/>
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+
+
+                </div>
+            </div>
+        {% endfor %}
+
+
+        {% for video in trick.videos %}
+
+            <div class="ticket m-1">
+                <div class="ticket-top d-flex justify-content-center">
+                    <iframe class="ticket m-3" width="250" height="190" src="{{ video.url }}">
+                    </iframe>
+                </div>
+
+                <div class="ticket-footer">
+                    <form method="post"
+                          action="{{ path('video_delete', {'id': video.id }) }}"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette video ?');">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-video') }}"/>
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+    {% block javascripts %}
+
+        {{ parent() }}
+
+        <script>
+            //images
+
+            var $collectionHolder;
+
+            // setup an "add a tag" link
+            var $addImageButton = $('<button type="button" class="add_image_link btn btn-info">Ajouter</button>');
+            var $newLinkLi = $('<li class="list-group-item"></li>').append($addImageButton);
+
+        </script>
+        <script>
+
+            jQuery(document).ready(function () {
+                // Get the ul that holds the collection of tags
+                $collectionHolder = $('ul.images');
+
+                // add the "add a tag" anchor and li to the tags ul
+                $collectionHolder.append($newLinkLi);
+
+                // count the current form inputs we have (e.g. 2), use that as the new
+                // index when inserting a new item (e.g. 2)
+                $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+                $addImageButton.on('click', function (e) {
+                    // add a new tag form (see next code block)
+                    addImageForm($collectionHolder, $newLinkLi);
+                });
+            });
+
+            function addImageForm($collectionHolder, $newLinkLi) {
+                // Get the data-prototype explained earlier
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                var newForm = prototype;
+                // You need this only if you didn't set 'label' => false in your tags field in TaskType
+                // Replace '__name__label__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                // newForm = newForm.replace(/__name__label__/g, index);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                newForm = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
+                $newLinkLi.before($newFormLi);
+            }
+
+        </script>
+        <script>
+
+            // videos
+
+            var $collectionHolder2;
+
+            // setup an "add a tag" link
+            var $addVideoButton = $('<button type="button" class="add_video_link btn btn-info">Ajouter</button>');
+            var $newLinkLi2 = $('<li class="list-group-item"></li>').append($addVideoButton);
+
+            jQuery(document).ready(function () {
+                // Get the ul that holds the collection of tags
+                $collectionHolder2 = $('ul.videos');
+
+                // add the "add a tag" anchor and li to the tags ul
+                $collectionHolder2.append($newLinkLi2);
+
+                // count the current form inputs we have (e.g. 2), use that as the new
+                // index when inserting a new item (e.g. 2)
+                $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
+
+                $addVideoButton.on('click', function (e) {
+                    // add a new tag form (see next code block)
+                    addVideoForm($collectionHolder2, $newLinkLi2);
+                });
+            });
+
+            function addVideoForm($collectionHolder2, $newLinkLi2) {
+                // Get the data-prototype explained earlier
+                var prototype = $collectionHolder2.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder2.data('index');
+
+                var newForm2 = prototype;
+                // You need this only if you didn't set 'label' => false in your tags field in TaskType
+                // Replace '__name__label__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                // newForm = newForm.replace(/__name__label__/g, index);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                newForm2 = newForm2.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder2.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormLi2 = $('<li class="list-group-item"></li>').append(newForm2);
+                $newLinkLi2.before($newFormLi2);
+            }
+
+
+        </script>
+        <script>
+            //custom-file-label
+
+            $('.custom-file input').change(function (e) {
+                var files = [];
+                for (var i = 0; i < $(this)[0].files.length; i++) {
+                    files.push($(this)[0].files[i].name);
+                }
+                $(this).next('.custom-file-label').html(files.join(', '));
+            });
+
+        </script>
+    {% endblock %}
+
+    {% block stylesheets %}
+        <style>
+            .custom-file-input ~ .custom-file-label::after {
+                content: "Parcourir";
+            }
+        </style>
+
+    {% endblock %}

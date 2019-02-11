@@ -5,14 +5,30 @@
 {% block body %}
 
 
-    <div class="my-view-header">
+<div class="my-view-header">
     <div class="container view-content ">
 
 
         <div class="row justify-content-center">
             <div class="trick-first-image">
+
+                {% if edit is not defined %}
+                    <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i
+                                class="fas fa-pencil-alt"></i></a>
+
+                {% endif %}
+
                 <h3 class="trick-title">{{ trick.name }}</h3>
-                <img class="first-image-view" src="{{ asset('uploads/images/'~trick.firstImage.name|e) }}"
+                <img class="first-image-view" src="
+{% if trick.images.first %}
+
+{{ asset('uploads/images/'~trick.images.first.name|e) }}
+
+{% else %}
+
+{{ asset('uploads/images/'~default_image|e) }}
+{% endif %}
+"
                      alt="First image">
             </div>
         </div>
@@ -52,33 +68,91 @@
 
 
                         </div>
+                        {% if edit is defined %}
+                            <div class="ticket-footer">
+                                <a href="{{ path('image_edit', {'id': image.id}) }}"><i
+                                            class="fas fa-pencil-alt"></i></a>
+                                <form method="post"
+                                      action="{{ path('image_delete', {'id': image.id }) }}"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer cette image ?');">
+                                    <input type="hidden" name="_method" value="DELETE"/>
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-image') }}"/>
+                                    <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
+                                </form>
+
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
                 {% for video in trick.videos %}
 
-                    <iframe class="ticket m-3" width="250" height="190" src="{{ video.url }}">
-                    </iframe>
+                    <div class="ticket m-1">
+                        <div class="ticket-top d-flex justify-content-center">
+                            <iframe class="ticket m-3" width="250" height="190" src="{{ video.url }}">
+                            </iframe>
+                        </div>
+
+                        {% if edit is defined %}
+                            <div class="ticket-footer">
+                                <a href="{{ path('video_edit', {'id': video.id}) }}"><i
+                                            class="fas fa-pencil-alt"></i></a>
+                                <form method="post"
+                                      action="{{ path('video_delete', {'id': video.id }) }}"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer cette video ?');">
+                                    <input type="hidden" name="_method" value="DELETE"/>
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-video') }}"/>
+                                    <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
 
                 {% endfor %}
             </div>
         </div>
-        <div class="row">
-            <div class="my-3">
-                {{ trick.description }}
+        {% if edit is defined %}
+            <div class="row justify-content-center mt-3">
+
+                <a href="{{ path('image_new', {'id' : trick.id}) }}" class="btn btn-primary mx-3">Ajouter image</a>
+                <a href="{{ path('video_new', {'id' : trick.id}) }}" class="btn btn-primary mx-3">Ajouter video</a>
             </div>
-        </div>
-        <div class="row justify-content-center">
+
+
+        {% endif %}
+
+        <div class="row justify-content-center mt-3">
             <span class="badge badge-info mx-1">Date de création: {{ trick.date | date('d/m/y', 'Europe/Paris') }}</span>
             <span class="badge badge-info mx-1">Groupe: {{ trick.trickGroup.name }}</span>
+            <span class="badge badge-info mx-1">Date de modification: {{ trick.dateUpdate | date('d/m/y', 'Europe/Paris') }}</span>
 
         </div>
 
+        {% if edit is defined %}
+
+
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-6">
+
+                    {{ form_start(form) }}
+
+                    {{ form_rest(form) }}
+                    <button class="btn btn-info">Enregistrer</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+
+        {% else %}
+            <div class="row">
+                <div class="my-3">
+                    {{ trick.description }}
+                </div>
+            </div>
+
+        {% endif %}
     </div>
     {#</div>#}
 
 
+    {% endblock %}
 
-
-
-
-{% endblock %}
