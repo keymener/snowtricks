@@ -41,9 +41,17 @@ body {
     .trick-edit {
         position: absolute;
         top: 20px;
+        right: 40px;
+        color: #212529;
+
+    }
+
+    .trick-delete {
+        position: absolute;
+        top: 20px;
         right: 20px;
-        color: white;
-        text-shadow: rgba(0, 0, 0, 1) 0px 0px 20px;
+        color: #212529;
+
     }
 
 }
@@ -58,9 +66,17 @@ body {
     .trick-edit {
         position: absolute;
         top: 100px;
-        right: 40px;
-        color: white;
-        text-shadow: rgba(0, 0, 0, 1) 0px 0px 20px;
+        right: 50px;
+
+
+    }
+
+    .trick-delete {
+        position: absolute;
+        top: 100px;
+        right: 30px;
+
+
     }
 
 }
@@ -188,8 +204,6 @@ footer {
 
 }
 
-
-
 .links {
     text-transform: uppercase;
     font-weight: bold;
@@ -211,6 +225,10 @@ footer {
 }
 
 .myDeleteButton {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+.myDeleteButton2{
     -webkit-appearance: searchfield-cancel-button;
 }
 

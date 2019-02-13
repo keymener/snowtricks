@@ -2,9 +2,18 @@
 
 {% block title %}Snowtricks{% endblock %}
 
+
+{% block navTricks %}
+<li class="nav-item">
+    <a class="nav-link" href="#tricks">
+        Tricks
+    </a>
+</li>
+{% endblock %}
+
 {% block body %}
 
-
+{#main home header#}
     <header class="my-main-header">
         <div class="container-fluid h-100">
             <div class="h-100 d-flex flex-column justify-content-between">
@@ -30,6 +39,8 @@
 
                 <div class="ticket m-3" id="{{ anchor }}">
                     <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
+
+                        {#top part of trick ticket with the first image#}
                         <div class="ticket-top">
 
 
@@ -47,22 +58,34 @@
                         </div>
                     </a>
                     <div class="ticket-footer">
+
+                        {#name of the trick#}
                         <div class="name">
                             <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
                                 {{ trick.name }}
                             </a>
                         </div>
 
-                        <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i class="fas fa-pencil-alt"></i></a>
+                        {#edit trick button#}
+                        <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i
+                                    class="fas fa-pencil-alt"></i></a>
 
-
-                        <div class="delete"><i class="fas fa-trash-alt"></i></div>
+                        {#delete trick button#}
+                        <form method="post"
+                              action="{{ path('trick_delete', {'id': trick.id }) }}"
+                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette figure ?');">
+                            <input type="hidden" name="_method" value="DELETE"/>
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-trick') }}"/>
+                            <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
+                        </form>
                     </div>
                 </div>
                 {% set anchor = anchor + 1 %}
             {% endfor %}
 
         </div>
+
+        {#view more button#}
         <div class="d-flex {% if more is defined %}justify-content-end{% else %}justify-content-center{% endif %}">
             {% if more is defined %}
                 <div class="narrow-down">
