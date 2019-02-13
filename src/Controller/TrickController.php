@@ -140,4 +140,29 @@ class TrickController extends AbstractController
     }
 
 
+    /**
+     * Delete trick
+     * @Route("/admin/trick-delete/{id}", name="trick_delete", methods="DELETE")
+     * @param Request $request
+     * @param Trick $image
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteImage(Request $request, Trick $trick)
+    {
+        if ($this->isCsrfTokenValid('delete-trick', $request->request->get('_token'))) {
+
+
+            $this->em->remove($trick);
+            $this->em->flush();
+
+
+            $this->addFlash('success', "La figure a bien été supprimée");
+        }
+
+        return $this->redirectToRoute('trick_home', [
+
+        ]);
+    }
+
+
 }

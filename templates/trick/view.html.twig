@@ -13,8 +13,20 @@
             <div class="trick-first-image">
 
                 {% if edit is not defined %}
+
+                    {#edit trick link#}
                     <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i
                                 class="fas fa-pencil-alt"></i></a>
+
+
+                    {#delete trick button#}
+                    <form class="trick-delete" method="post"
+                          action="{{ path('trick_delete', {'id': trick.id }) }}"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette figure ?');">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-trick') }}"/>
+                        <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
+                    </form>
 
                 {% endif %}
 
