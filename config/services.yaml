@@ -7,6 +7,7 @@ parameters:
     locale: 'fr'
     images_directory: '%kernel.project_dir%/public/uploads/images'
     default_image: 'default.jpeg'
+    from_email: 'keigo.matsunaga@gmail.com'
 
 services:
     # default configuration for services in *this* file
@@ -35,3 +36,11 @@ services:
     App\EventSubscriber\ImageSubscriber:
         tags:
         - { name: doctrine.event_subscriber, connection: default }
+
+    App\EventSubscriber\EmailSubscriber:
+        tags:
+        - { name: doctrine.event_subscriber, connection: default }
+
+    App\Service\MailSender:
+        arguments:
+            $fromEmail: '%from_email%'
