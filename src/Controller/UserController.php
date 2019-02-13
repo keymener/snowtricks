@@ -6,8 +6,11 @@ use App\Entity\User;
 use App\Form\UserRegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
@@ -53,6 +56,33 @@ class UserController extends AbstractController
         return $this->render('user/registration.html.twig', [
             'form' => $form->createView()
         ]);
+
+    }
+
+    /**
+     * @Route("/login", name="user_login")
+     */
+    public function login(Request $request, AuthenticationUtils $authUtils)
+    {
+        $error = $authUtils->getLastAuthenticationError();
+
+        $lastUsername = $authUtils->getLastUsername();
+
+        $form = $this->createForm(UserRegistrationType::class);
+
+        return $this->render('user/login.html.twig', [
+            'form' => $form->createView(),
+            'lastUsername' => $lastUsername,
+            'error' => $error,
+        ]);
+
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
 
     }
 }

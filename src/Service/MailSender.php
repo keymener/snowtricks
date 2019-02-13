@@ -26,14 +26,7 @@ class MailSender
      */
     public function send(Mail $mail)
     {
-        $message = new \Swift_Message();
-        $message->setFrom($this->fromEmail)
-            ->setTo($mail->getDestEmail())
-            ->setBody($mail->getMessage());
 
-        $this->mailer->send($message);
-
-        return;
 
     }
 

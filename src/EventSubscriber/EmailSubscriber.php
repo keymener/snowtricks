@@ -9,20 +9,21 @@ use App\Service\MailSender;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class EmailSubscriber implements EventSubscriber
+class EmailSubscriber extends AbstractController implements EventSubscriber
 {
 
 
     /**
      * @var MailSender
      */
-    private $sender;
+    private $mailer;
 
-    public function __construct(MailSender $sender)
+    public function __construct(\Swift_Mailer $mailer)
     {
 
-        $this->sender = $sender;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -43,24 +44,30 @@ class EmailSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
-
-        $this->sendEmail($entity);
-
-    }
-
-    public function sendEmail($entity)
-    {
         if (!$entity instanceof User) {
             return;
         }
 
-        $email = new Mail();
-        $email->setDestEmail($entity->getEmail())
-            ->setSubject('test')
-            ->setMessage('test message');
+        $message = new \Swift_Message();
+        $message->setFrom('snowtrick@test.com')
+            ->setTo($entity->getEmail())
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'email/registration.html.twig',
+                    ['name' => $entity->getUsername()]
+                ),
+                'text/html'
 
-        $this->sender->send($email);
+            );
+
+        $this->mailer->send($message);
+
+        return;
+
 
     }
+
 }
+
+
