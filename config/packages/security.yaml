@@ -20,8 +20,8 @@ security:
             provider: my_database
             anonymous: ~
             form_login:
-                login_path: login
-                check_path: login
+                login_path: user_login
+                check_path: user_login
             logout:
                 path: /logout
                 target: /
