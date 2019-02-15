@@ -4,16 +4,16 @@
 
 
 {% block navTricks %}
-<li class="nav-item">
-    <a class="nav-link" href="#tricks">
-        Tricks
-    </a>
-</li>
+    <li class="nav-item">
+        <a class="nav-link" href="#tricks">
+            Tricks
+        </a>
+    </li>
 {% endblock %}
 
 {% block body %}
 
-{#main home header#}
+    {#main home header#}
     <header class="my-main-header">
         <div class="container-fluid h-100">
             <div class="h-100 d-flex flex-column justify-content-between">
@@ -57,27 +57,29 @@
 
                         </div>
                     </a>
-                    <div class="ticket-footer">
+                    <div class="ticket-footer {% if app.user.username is not defined %}justify-content-start{% endif %} ">
 
                         {#name of the trick#}
-                        <div class="name">
+                        <div class="name {% if app.user.username is not defined %}ml-3{% endif %}">
                             <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
                                 {{ trick.name }}
                             </a>
                         </div>
+                        {% if app.user.username is defined %}
+                            {#edit trick button#}
+                            <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i
+                                        class="fas fa-pencil-alt"></i></a>
 
-                        {#edit trick button#}
-                        <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i
-                                    class="fas fa-pencil-alt"></i></a>
+                            {#delete trick button#}
+                            <form method="post"
+                                  action="{{ path('trick_delete', {'id': trick.id }) }}"
+                                  onsubmit="return confirm('Voulez-vous vraiment supprimer cette figure ?');">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-trick') }}"/>
+                                <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
+                            </form>
 
-                        {#delete trick button#}
-                        <form method="post"
-                              action="{{ path('trick_delete', {'id': trick.id }) }}"
-                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette figure ?');">
-                            <input type="hidden" name="_method" value="DELETE"/>
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete-trick') }}"/>
-                            <button type="submit" class="myDeleteButton fas fa-trash-alt"></button>
-                        </form>
+                        {% endif %}
                     </div>
                 </div>
                 {% set anchor = anchor + 1 %}

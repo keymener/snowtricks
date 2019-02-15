@@ -53,11 +53,15 @@
                     S'enregistrer
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('security_login') }}">
-                    S'authentifier
-                </a>
-            </li>
+
+
+            {% if app.user.username is not defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('security_login') }}">
+                        S'authentifier
+                    </a>
+                </li>
+            {% endif %}
         </ul>
 
     </div>
