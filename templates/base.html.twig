@@ -48,17 +48,27 @@
                     New Trick
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('security_register') }}">
-                    S'enregistrer
-                </a>
-            </li>
 
+            {% if app.user.username is not defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('security_register') }}">
+                        S'enregistrer
+                    </a>
+                </li>
+            {% endif %}
 
             {% if app.user.username is not defined %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('security_login') }}">
                         S'authentifier
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if app.user.username is defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('security_logout') }}">
+                        Déconnexion
                     </a>
                 </li>
             {% endif %}
