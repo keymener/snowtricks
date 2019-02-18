@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="trick-first-image">
 
-                {% if edit is not defined %}
+                {% if app.user.username is defined %}
 
                     {#edit trick link#}
                     <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i

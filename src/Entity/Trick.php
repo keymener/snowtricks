@@ -22,7 +22,7 @@ class Trick
     private $id;
 
     /**
-     * @Assert\Length(min="2")
+     * @Assert\Length(min="2", max =20)
      * @ORM\Column(type="string", length=255)
      */
     private $name;
