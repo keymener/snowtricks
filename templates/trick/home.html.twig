@@ -57,17 +57,17 @@
 
                         </div>
                     </a>
-                    <div class="ticket-footer {% if app.user.username is not defined %}justify-content-start{% endif %} ">
+                    <div class="ticket-footer justify-content-start ">
 
                         {#name of the trick#}
-                        <div class="name {% if app.user.username is not defined %}ml-3{% endif %}">
+                        <div class="name ml-3">
                             <a class="links" href="{{ path('trick_view', {'id': trick.id}) }}">
                                 {{ trick.name }}
                             </a>
                         </div>
-                        {% if app.user.username is defined %}
+                        {% if is_granted('edit', trick) %}
                             {#edit trick button#}
-                            <a class="links" href="{{ path('trick_edit', {'id': trick.id}) }}"><i
+                            <a class="links ml-3" href="{{ path('trick_edit', {'id': trick.id}) }}"><i
                                         class="fas fa-pencil-alt"></i></a>
 
                             {#delete trick button#}

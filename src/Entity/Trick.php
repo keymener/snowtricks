@@ -59,6 +59,11 @@ class Trick
      */
     private $dateUpdate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $user;
+
 
     public function __construct()
     {
@@ -203,6 +208,18 @@ class Trick
     public function setDateUpdate(?\DateTimeInterface $dateUpdate): self
     {
         $this->dateUpdate = $dateUpdate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

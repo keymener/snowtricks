@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
+use App\Security\Voter\TrickVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,6 +78,9 @@ class TrickController extends AbstractController
             //set the current datetime
             $trick->setDate(new \DateTime());
 
+            //set the current user
+            $trick->setUser($this->getUser());
+
             $this->em->persist($trick);
             $this->em->flush();
 
@@ -116,6 +120,12 @@ class TrickController extends AbstractController
      */
     public function edit(Trick $trick, Request $request)
     {
+        if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
+
+           $this->addFlash('danger', "Vous n'avez pas d'authorisation pour modifier cette figure");
+           return $this->redirectToRoute('trick_home');
+        }
+
         $form = $this->createForm(TrickEditType::class, $trick);
 
         $form->handleRequest($request);

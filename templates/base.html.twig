@@ -43,11 +43,13 @@
             {% block navTricks %}
 
             {% endblock %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('trick_new') }}">
-                    New Trick
-                </a>
-            </li>
+            {% if app.user.username is defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('trick_new') }}">
+                        New Trick
+                    </a>
+                </li>
+            {% endif %}
 
             {% if app.user.username is not defined %}
                 <li class="nav-item">
