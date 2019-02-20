@@ -43,11 +43,13 @@
             {% block navTricks %}
 
             {% endblock %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('trick_new') }}">
-                    New Trick
-                </a>
-            </li>
+            {% if app.user.username is defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('trick_new') }}">
+                        New Trick
+                    </a>
+                </li>
+            {% endif %}
 
             {% if app.user.username is not defined %}
                 <li class="nav-item">
@@ -78,41 +80,44 @@
 </nav>
 
 {# flash messages #}
-{% block flash %}
-    {% for flashMessage in app.flashes('success') %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ flashMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
-                        aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-    {% for flashMessage in app.flashes('info') %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {{ flashMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
-                        aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-    {% for flashMessage in app.flashes('warning') %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ flashMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
-                        aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-    {% for flashMessage in app.flashes('danger') %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ flashMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
-                        aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-{% endblock %}
+<div class="container">
 
+    {% block flash %}
+        {% for flashMessage in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ flashMessage }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
+                            aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.flashes('info') %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ flashMessage }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
+                            aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.flashes('warning') %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ flashMessage }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
+                            aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.flashes('danger') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ flashMessage }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span
+                            aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endblock %}
+
+</div>
 
 {% block body %}{% endblock %}
 

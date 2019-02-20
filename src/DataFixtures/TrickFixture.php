@@ -5,15 +5,26 @@ namespace App\DataFixtures;
 
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
+use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class TrickFixture extends Fixture
 {
 
+    private $passwordEncoder;
+
+    /**
+     * UserFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -47,15 +58,36 @@ class TrickFixture extends Fixture
             $trick->addVideo($video);
             $trick->setTrickGroup($group);
 
+            //set user
+            $user = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
+
+            if (!$user) {
+
+
+                $user = new User();
+
+                $user->setUsername('admin');
+                $user->setPassword('admin');
+                $user->setEmail('keigo.matsunaga@gmail.com');
+                $user->setRoles([User::ROLE_ADMIN]);
+
+                $encodedPassword = $this->passwordEncoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($encodedPassword);
+            }
+
+            $trick->setUser($user);
+
             $manager->persist($group);
+            $manager->persist($user);
 
 
             $manager->persist($video);
             $manager->persist($trick);
+            $manager->flush();
         }
 
 
-        $manager->flush();
+
     }
 
 

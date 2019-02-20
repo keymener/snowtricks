@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="trick-first-image">
 
-                {% if app.user.username is defined %}
+                {% if is_granted('edit', trick) %}
 
                     {#edit trick link#}
                     <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i
@@ -136,6 +136,7 @@
             <span class="badge badge-info mx-1">Date de création: {{ trick.date | date('d/m/y', 'Europe/Paris') }}</span>
             <span class="badge badge-info mx-1">Groupe: {{ trick.trickGroup.name }}</span>
             <span class="badge badge-info mx-1">Date de modification: {{ trick.dateUpdate | date('d/m/y', 'Europe/Paris') }}</span>
+            <span class="badge badge-info mx-1">Créé par: {{ trick.user.username }}</span>
 
         </div>
 

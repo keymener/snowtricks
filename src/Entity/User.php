@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface, \Serializable
 {
+
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -37,6 +42,19 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $roles = [];
+
+
+
+
+    public function __construct()
+    {
+        $this->setRoles([self::ROLE_USER]);
+    }
 
     public function getId(): ?int
     {
@@ -79,23 +97,9 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return array('ROLE_USER');
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_ADMIN'];
+        return $this->roles;
     }
 
     /**
@@ -155,4 +159,15 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized, ['allowed_classes' => false]);
 
     }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+
+
 }
