@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\UserRegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,7 @@ class SecurityController extends AbstractController
             $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
 
             $user->setPassword($encodedPassword);
+
 
             $this->em->persist($user);
             $this->em->flush();

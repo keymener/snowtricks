@@ -49,6 +49,11 @@ class TrickVoter extends Voter
             return false;
         }
 
+        //if the user is the admin then it can edit whatever he want
+        if(in_array(User::ROLE_ADMIN, $user->getRoles())){
+            return true;
+        }
+
         /** @var Trick $trick */
         $trick = $subject;
 
