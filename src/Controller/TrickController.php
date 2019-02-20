@@ -157,8 +157,15 @@ class TrickController extends AbstractController
      * @param Trick $image
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteImage(Request $request, Trick $trick)
+    public function delete(Request $request, Trick $trick)
     {
+
+        if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
+
+            $this->addFlash('danger', "Vous n'avez pas d'authorisation pour supprimer cette figure");
+            return $this->redirectToRoute('trick_home');
+        }
+
         if ($this->isCsrfTokenValid('delete-trick', $request->request->get('_token'))) {
 
 
