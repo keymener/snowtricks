@@ -40,7 +40,10 @@ class EmailSubscriber extends AbstractController implements EventSubscriber
         ];
     }
 
-
+    /**
+     * User registration email
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();

@@ -9,6 +9,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class TrickVoter
+ * A user can edit his own trick but not others, Admin can edit all tricks
+ * @package App\Security\Voter
+ */
 class TrickVoter extends Voter
 {
 
