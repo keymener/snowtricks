@@ -27,6 +27,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min = 2,
+     *     minMessage="username.lenght.min"
+     * )
      */
     private $username;
 
@@ -52,8 +56,6 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $resetToken;
-
-
 
 
     public function __construct()
@@ -183,8 +185,6 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
-
-
 
 
 }

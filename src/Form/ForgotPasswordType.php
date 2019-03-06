@@ -14,7 +14,8 @@ class ForgotPasswordType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'pseudo'
+                'label' => 'pseudo',
+
             ]);
     }
 
@@ -22,6 +23,8 @@ class ForgotPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'translation_domain' => 'forms',
+
         ]);
     }
 }

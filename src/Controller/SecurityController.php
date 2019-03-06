@@ -122,6 +122,7 @@ class SecurityController extends AbstractController
                 $message = new \Swift_Message();
                 $message->setFrom('snowtrick@test.com')
                     ->setTo($user->getEmail())
+                    ->setSubject('Réinitialisation mot de passe de votre compte Snowtricks')
                     ->setBody(
                         $this->renderView(
                             'email/forgot.html.twig', [
@@ -168,24 +169,25 @@ class SecurityController extends AbstractController
 
         $formUser = new User();
 
+
         $form = $this->createForm(ResetPasswordType::class, $formUser);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-            if ($formUser->getEmail() ==! $user->getEmail()) {
+            //check if email set is not the same than the real user email
+            if ($formUser->getEmail() !== $user->getEmail()) {
 
                 $this->addFlash('danger', "l'email n'est pas valide.");
                 return $this->redirectToRoute('trick_home');
             }
 
-                $user->setResetToken(null);
-                $user->setPassword($passwordEncoder->encodePassword($user, $formUser->getPassword()));
-                $this->em->flush();
+            $user->setResetToken(null);
+            $user->setPassword($passwordEncoder->encodePassword($user, $formUser->getPassword()));
+            $this->em->flush();
 
-                $this->addFlash('success', "Mot de passe mis à jour");
-                return $this->redirectToRoute('trick_home');
+            $this->addFlash('success', "Mot de passe mis à jour");
+            return $this->redirectToRoute('trick_home');
 
         }
 
