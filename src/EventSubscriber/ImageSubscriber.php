@@ -38,6 +38,7 @@ class ImageSubscriber implements EventSubscriber
         ];
     }
 
+
     public function postRemove(LifecycleEventArgs $args)
     {
         /** @var Image $entity */
