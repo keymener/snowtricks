@@ -1,0 +1,11 @@
+{{ form_start(form, {method: 'POST', action: path('comment_new', {'id': trick.id})}) }}
+<div class="d-flex justify-content-center flex-wrap">
+
+    {{ form_row(form.text) }}
+
+    <div>
+        <button type="submit" class="btn btn-success">Leave a comment</button>
+    </div>
+
+</div>
+{{ form_end(form) }}

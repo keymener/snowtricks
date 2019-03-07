@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Form\CommentType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
 use App\Security\Voter\TrickVoter;
@@ -62,7 +63,10 @@ class TrickController extends AbstractController
 
 
     /**
+     * Create a new trick
      * @Route("/trick/new", name="trick_new")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newTrick(Request $request)
     {
@@ -99,14 +103,17 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{id}", name="trick_view", methods={"GET"})
+     * @Route("/trick/{id}", name="trick_view", methods={"GET|POST"})
      * @param Trick $trick
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function view(Trick $trick)
     {
+
+        $form = $this->createForm(CommentType::class);
         return $this->render('trick/view.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'form' => $form->createView()
 
         ]);
     }
@@ -122,8 +129,8 @@ class TrickController extends AbstractController
     {
         if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
 
-           $this->addFlash('danger', "Vous n'avez pas d'authorisation pour modifier cette figure");
-           return $this->redirectToRoute('trick_home');
+            $this->addFlash('danger', "Vous n'avez pas d'authorisation pour modifier cette figure");
+            return $this->redirectToRoute('trick_home');
         }
 
         $form = $this->createForm(TrickEditType::class, $trick);
