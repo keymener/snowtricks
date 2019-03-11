@@ -13,7 +13,9 @@ use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\UserRegistrationType;
+use App\Service\MailSender;
 use App\Service\TokenGenerator;
+use App\Service\UrlMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,10 +32,25 @@ class SecurityController extends AbstractController
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var TokenGenerator
+     */
+    private $tokenGenerator;
+    /**
+     * @var MailSender
+     */
+    private $mailSender;
+    /**
+     * @var UrlMaker
+     */
+    private $urlMaker;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, TokenGenerator $tokenGenerator, MailSender $mailSender, UrlMaker $urlMaker)
     {
         $this->em = $em;
+        $this->tokenGenerator = $tokenGenerator;
+        $this->mailSender = $mailSender;
+        $this->urlMaker = $urlMaker;
     }
 
 
@@ -43,7 +60,7 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, \Swift_Mailer $mailer)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
 
         $user = new User();
@@ -61,32 +78,15 @@ class SecurityController extends AbstractController
             $user->setPassword($encodedPassword);
 
             //generate token
-            $token = $tokenGenerator->generate();
+            $token = $this->tokenGenerator->generate();
             $user->setSubscribeToken($token);
 
             //generate the url for the user
-            $url = $this->generateUrl('security_confirm_registration', [
-                'token' => $token,
-            ], UrlGeneratorInterface::ABSOLUTE_URL);
+            $url = $this->urlMaker->generate('security_confirm_registration', $token);
 
             //send the mail
+            $this->mailSender->send($user, 'email/registration.html.twig', $url);
 
-            $message = new \Swift_Message();
-            $message->setFrom('snowtrick@test.com')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                    // templates/emails/registration.html.twig
-                        'email/registration.html.twig', [
-                            'name' => $user->getUsername(),
-                            'url' => $url
-                        ]
-                    ),
-                    'text/html'
-
-                );
-
-            $mailer->send($message);
 
             $this->em->persist($user);
             $this->em->flush();
@@ -123,6 +123,9 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('trick_home');
         }
 
+        $user->setSubscribeToken(null);
+        $user->setIsActive(true);
+
         $this->em->flush();
         $this->addFlash('success', "Votre compte a bien été enregistré.");
 
@@ -156,7 +159,7 @@ class SecurityController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function forgot(Request $request, \Swift_Mailer $mailer, TokenGenerator $tokenGenerator)
+    public function forgot(Request $request, MailSender $mailSender, TokenGenerator $tokenGenerator, UrlMaker $urlMaker )
     {
         $potentialUser = new User();
         $form = $this->createForm(ForgotPasswordType::class, $potentialUser);
@@ -176,32 +179,17 @@ class SecurityController extends AbstractController
 
             } else {
 
+                //generate token
                 $token = $tokenGenerator->generate();
                 $user->setResetToken($token);
                 $this->em->flush();
 
-                $url = $this->generateUrl('security_reset', [
-                    'token' => $token,
-                ], UrlGeneratorInterface::ABSOLUTE_URL);
+                //generate the url
+                $url = $urlMaker->generate('security_reset', $token);
 
+                //send email
+                $mailSender->send($user, 'email/forgot.html.twig', $url );
 
-                $message = new \Swift_Message();
-                $message->setFrom('snowtrick@test.com')
-                    ->setTo($user->getEmail())
-                    ->setSubject('Réinitialisation mot de passe de votre compte Snowtricks')
-                    ->setBody(
-                        $this->renderView(
-                            'email/forgot.html.twig', [
-                                'user' => $user,
-                                'url' => $url
-
-                            ]
-                        ),
-                        'text/html'
-
-                    );
-
-                $mailer->send($message);
 
                 $this->addFlash('success',
                     "Un email vient d'être envoyé, veuillez suivre les instructions de cet email pour réinitialiser votre mot de passe.");
