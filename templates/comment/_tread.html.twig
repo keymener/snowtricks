@@ -1,0 +1,29 @@
+<div class="comments">
+
+
+    {% for comment in trick.comments %}
+
+        <div class="d-flex card mt-1">
+            <div class="card-header d-flex">
+                <div>
+                    <b>
+                        {{ comment.user.username }}
+                    </b>
+                </div>
+                <div class="ml-1 ">
+                    <small>
+                        le {{ comment.datetime | date('d/m/y', 'Europe/Paris') }}
+                    </small>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="ml-3">
+                    {{ comment.text }}
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+
