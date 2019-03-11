@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\UserRegistrationType;
+use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, \Swift_Mailer $mailer)
     {
 
         $user = new User();
@@ -53,15 +54,44 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //encode password
             $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
 
+            //set encoded password
             $user->setPassword($encodedPassword);
 
+            //generate token
+            $token = $tokenGenerator->generate();
+            $user->setSubscribeToken($token);
+
+            //generate the url for the user
+            $url = $this->generateUrl('security_confirm_registration', [
+                'token' => $token,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            //send the mail
+
+            $message = new \Swift_Message();
+            $message->setFrom('snowtrick@test.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                    // templates/emails/registration.html.twig
+                        'email/registration.html.twig', [
+                            'name' => $user->getUsername(),
+                            'url' => $url
+                        ]
+                    ),
+                    'text/html'
+
+                );
+
+            $mailer->send($message);
 
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->addFlash('success', "L'enregistrement a bien été effectué");
+            $this->addFlash('success', "Un email vient d'être envoyé, veuillez suivre les instructions de cet email afin de confirmer l'inscription.");
             return $this->redirectToRoute('trick_home');
 
         }
@@ -74,7 +104,37 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/confirm_registration/{token}", name="security_confirm_registration", methods={"GET|POST"})
+     * @param string $token
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function confirmRegistration(string $token)
+    {
+        //get the user using the received token
+        $user = $this->em->getRepository(User::class)->findOneBy([
+            'subscribeToken' => $token
+        ]);
+
+        //if the user doesn't exists then return a message
+        if ($user === null) {
+
+            $this->addFlash('danger', "Le token est inconnu.");
+
+            return $this->redirectToRoute('trick_home');
+        }
+
+        $this->em->flush();
+        $this->addFlash('success', "Votre compte a bien été enregistré.");
+
+        return $this->redirectToRoute('trick_home');
+
+    }
+
+    /**
+     * Security login for user
      * @Route("/login", name="security_login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -83,14 +143,20 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
 
     /**
+     * Handle forgot password
      * @Route("/forgot_password", name="security_forgot")
+     * @param Request $request
+     * @param \Swift_Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
-    public function forgot(Request $request, \Swift_Mailer $mailer)
+    public function forgot(Request $request, \Swift_Mailer $mailer, TokenGenerator $tokenGenerator)
     {
         $potentialUser = new User();
         $form = $this->createForm(ForgotPasswordType::class, $potentialUser);
@@ -110,7 +176,7 @@ class SecurityController extends AbstractController
 
             } else {
 
-                $token = sha1(random_bytes(10));
+                $token = $tokenGenerator->generate();
                 $user->setResetToken($token);
                 $this->em->flush();
 
@@ -138,7 +204,7 @@ class SecurityController extends AbstractController
                 $mailer->send($message);
 
                 $this->addFlash('success',
-                    "Un email vient d'être envoyé, veuillez suivre les instruction de cet email pour réinitialiser votre mot de passe.");
+                    "Un email vient d'être envoyé, veuillez suivre les instructions de cet email pour réinitialiser votre mot de passe.");
 
             }
 
@@ -151,7 +217,12 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * Reset password
      * @Route("/reset_password/{token}", name="security_reset")
+     * @param Request $request
+     * @param string $token
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function reset(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -199,6 +270,7 @@ class SecurityController extends AbstractController
 
 
     /**
+     * Security logout
      * @Route("/logout", name="security_logout")
      */
     public function logout()
