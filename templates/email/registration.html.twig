@@ -1,11 +1,10 @@
-<h3>Vous être bien enregistré sur Snowtrick!</h3>
+<h3>Vous être bien enregistré sur Snowtricks!</h3>
 
-Bonjour {{ name }}! L'engistrement s'est déroulé avec succès.
+Bonjour {{ user.username }}! Vous avez fait une demande d'inscription sur Snowtricks.
 
-{# example, assuming you have a route named "login" #}
-Pour vous authentifier, allez à: <a href="{{ url('security_login') }}">s'authentifier</a>.
+
+Pour vous terminer l'inscription, <a href="{{ param }}">cliquez sur ce lien .</a>
+
 
 Merci!
 
-{# Makes an absolute URL to the /images/logo.png file #}
-{#<img src="{{ absolute_url(asset('images/logo.png')) }}">#}
