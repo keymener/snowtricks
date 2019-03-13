@@ -20,12 +20,13 @@ class UserChecker implements UserCheckerInterface
      */
     public function checkPreAuth(UserInterface $user)
     {
+
         if (!$user instanceof User) {
             return;
         }
 
         /** @var User $user */
-        if(!true === $user->getIsActive()){
+        if(null === $user->getIsActive()){
 
             throw new CustomUserMessageAuthenticationException(
               "Le compte n'a pas été activé."
