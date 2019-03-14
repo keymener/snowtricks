@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
 
+    const COMMENT_PER_PAGE = 5 ;
+
     /**
      * @var EntityManagerInterface
      */
@@ -27,13 +29,17 @@ class CommentController extends AbstractController
     }
 
     /**
+     * Add new comment
+     *
      * @Route("comment/new/{id}", name="comment_new", methods={"GET|POST"})
+     * @param Trick $trick
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function new(Trick $trick, Request $request)
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
 
 
         $comment = new Comment();
@@ -65,5 +71,6 @@ class CommentController extends AbstractController
 
 
     }
+
 }
 

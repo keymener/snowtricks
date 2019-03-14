@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
+use App\Repository\CommentRepository;
 use App\Security\Voter\TrickVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +20,7 @@ class TrickController extends AbstractController
     private $em;
 
     const TRICKS_PER_PAGE = 15;
+    const COMMENTS_PER_PAGE = 5;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -26,6 +29,8 @@ class TrickController extends AbstractController
     }
 
     /**
+     * Home page
+     *
      * @Route("/", name="trick_home")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -40,7 +45,10 @@ class TrickController extends AbstractController
     }
 
     /**
+     * Show more tricks
+     *
      * @Route("/view-{maxResult}", name="trick_more", methods={"GET"})
+     * @param int $maxResult
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function more(int $maxResult)
@@ -103,20 +111,38 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{id}", name="trick_view", methods={"GET|POST"})
+     * @Route("/trick/{id}/{moreComments}", defaults={"more"=null}, name="trick_view", methods={"GET|POST"})
      * @param Trick $trick
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(Trick $trick)
+    public function view(Trick $trick, string $moreComments = null)
     {
 
+        //comment form
         $form = $this->createForm(CommentType::class);
+
+        //get firsts comments if more is not set
+        if (null === $moreComments) {
+            $comments = $this->em->getRepository(Comment::class)->findCommentsByTrick(
+                $trick,
+                self::COMMENTS_PER_PAGE
+            );
+        } else {
+
+            //get all comments
+            $comments = $this->em->getRepository(Comment::class)->findAll();
+        }
+
+
         return $this->render('trick/view.html.twig', [
             'trick' => $trick,
-            'form' => $form->createView()
+            'comments' => $comments,
+            'form' => $form->createView(),
+            'moreComments' => $moreComments
 
         ]);
     }
+
 
     /**
      * Edit a trick
