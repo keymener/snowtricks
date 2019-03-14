@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,21 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+
+
+    public function findCommentsByTrick(Trick $trick, int $maxResult)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.trick = :trick')
+            ->setParameter('trick', $trick->getId())
+            ->setMaxResults($maxResult)
+            ->orderBy('c.datetime', 'desc')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**
