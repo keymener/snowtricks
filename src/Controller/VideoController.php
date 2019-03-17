@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Form\VideoType;
+use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +18,11 @@ class VideoController extends AbstractController
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
 
@@ -34,8 +35,8 @@ class VideoController extends AbstractController
     public function deleteImage(Request $request, Video $video)
     {
         if ($this->isCsrfTokenValid('delete-video', $request->request->get('_token'))) {
-            $this->em->remove($video);
-            $this->em->flush();
+            $this->entityManager->remove($video);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "La video a bien été supprimée");
         }
@@ -62,7 +63,7 @@ class VideoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', "La video a bien été modifiée");
             return $this->redirectToRoute('trick_edit', [
@@ -80,13 +81,15 @@ class VideoController extends AbstractController
 
     /**
      * New video
-     * @Route("admin/video/new/{id}", name="video_new", methods={"GET|POST"})
-     * @param Trick $trick
+     * @Route("admin/video/new/trick/{slug}", name="video_new", methods={"GET|POST"})
+     * @param string $slug
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function new(Trick $trick, Request $request)
+    public function new(string $slug, Request $request, TrickBySlugFinder $trickFinder)
     {
+
+        $trick = $trickFinder->find($slug);
 
         $video = new Video();
 
@@ -97,8 +100,8 @@ class VideoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick->addVideo($video);
-            $this->em->persist($video);
-            $this->em->flush();
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "La video a bien été ajoutée");
             return $this->redirectToRoute('trick_edit', [

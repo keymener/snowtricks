@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\ImageType;
+use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +18,26 @@ class ImageController extends AbstractController
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * New image
-     * @Route("admin/image/new/trick-{id}", name="image_new", methods={"GET|POST"})
-     * @param Trick $trick
+     * @Route("admin/image/new/trick/{slug}", name="image_new", methods={"GET|POST"})
+     * @param string $slug
      * @param Request $request
+     * @param TrickBySlugFinder $trickFinder
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function new(Trick $trick, Request $request)
+    public function new(string $slug, Request $request, TrickBySlugFinder $trickFinder)
     {
+
+        //        find trick by slug
+        $trick = $trickFinder->find($slug);
 
         $image = new Image();
 
@@ -44,8 +49,8 @@ class ImageController extends AbstractController
 
             $image->setDateUpdate(new \DateTime());
             $image->setTrick($trick);
-            $this->em->persist($image);
-            $this->em->flush();
+            $this->entityManager->persist($image);
+            $this->entityManager->flush();
 
             $this->addFlash('success', "L' image a bien été ajoutée");
             return $this->redirectToRoute('trick_edit', [
@@ -79,7 +84,7 @@ class ImageController extends AbstractController
 
             $image->setDateUpdate(new \DateTime());
 
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', "L' image a bien été modifiée");
             return $this->redirectToRoute('trick_edit', [
@@ -106,8 +111,8 @@ class ImageController extends AbstractController
         if ($this->isCsrfTokenValid('delete-image', $request->request->get('_token'))) {
 
             $image->getTrick()->setDateUpdate(new \DateTime());
-            $this->em->remove($image);
-            $this->em->flush();
+            $this->entityManager->remove($image);
+            $this->entityManager->flush();
 
 
             $this->addFlash('success', "L'image a bien été supprimée");

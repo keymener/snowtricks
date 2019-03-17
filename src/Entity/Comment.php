@@ -27,7 +27,7 @@ class Comment
     private $datetime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Trick")
+     * @ORM\ManyToOne(targetEntity="Trick", inversedBy="comments")
      */
     private $trick;
 

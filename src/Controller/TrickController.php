@@ -7,8 +7,8 @@ use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
-use App\Repository\CommentRepository;
 use App\Security\Voter\TrickVoter;
+use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,15 +17,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickController extends AbstractController
 {
 
-    private $em;
+    private $entityManager;
 
     const TRICKS_PER_PAGE = 15;
     const COMMENTS_PER_PAGE = 5;
+    /**
+     * @var TrickBySlugFinder
+     */
+    private $trickFinder;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager, TrickBySlugFinder $trickFinder)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
 
+        $this->trickFinder = $trickFinder;
     }
 
     /**
@@ -93,8 +98,8 @@ class TrickController extends AbstractController
             //set the current user
             $trick->setUser($this->getUser());
 
-            $this->em->persist($trick);
-            $this->em->flush();
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
 
 
             $this->addFlash('success', 'La figure a bien été enregistrée');
@@ -111,26 +116,29 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{id}/{moreComments}", defaults={"more"=null}, name="trick_view", methods={"GET|POST"})
-     * @param Trick $trick
+     * @Route("/trick/{slug}/{moreComments}", defaults={"more"=null}, name="trick_view", methods={"GET|POST"})
+     * @param string $slug
+     * @param string|null $moreComments
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(Trick $trick, string $moreComments = null)
+    public function view(string $slug, string $moreComments = null)
     {
+//        find trick by slug
+        $trick = $this->trickFinder->find($slug);
 
         //comment form
         $form = $this->createForm(CommentType::class);
 
         //get firsts comments if more is not set
         if (null === $moreComments) {
-            $comments = $this->em->getRepository(Comment::class)->findCommentsByTrick(
+            $comments = $this->entityManager->getRepository(Comment::class)->findCommentsByTrick(
                 $trick,
                 self::COMMENTS_PER_PAGE
             );
         } else {
 
             //get all comments
-            $comments = $this->em->getRepository(Comment::class)->findAll();
+            $comments = $this->entityManager->getRepository(Comment::class)->findAll();
         }
 
 
@@ -146,13 +154,20 @@ class TrickController extends AbstractController
 
     /**
      * Edit a trick
-     * @Route("admin/trick/edit/{id}", name="trick_edit", methods={"GET|POST"})
-     * @param Trick $trick
+     * @Route("admin/trick/edit/{slug}", name="trick_edit", methods={"GET|POST"})
+     * @param string $slug
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Trick $trick, Request $request)
+    public function edit(string $slug, Request $request)
     {
+
+        //        find trick by slug
+        $trick = $this->trickFinder->find($slug);
+
+        // get Trick name to handle display of the name when a constraint error appear
+        $trickName = $trick->getName();
+
         if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
 
             $this->addFlash('danger', "Vous n'avez pas d'authorisation pour modifier cette figure");
@@ -168,30 +183,46 @@ class TrickController extends AbstractController
 
             $trick->setDateUpdate(new \DateTime());
 
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'La figure a bien été modifiée');
-
+            return $this->redirectToRoute('trick_view', [
+                'slug' => $trick->getSlug(),
+            ]);
 
         }
+
+        //Display flash message error when there is an error into form
+        if (!empty($form->getErrors(true))) {
+            dump($form->getErrors(true));
+            $this->addFlash('danger', "Il y a une erreur dans le formulaire");
+        }
+
+        // get Trick name to handle display of the name when a constraint error appear
+        $trick->setName($trickName);
 
         return $this->render('trick/view.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'edit' => true
+            'edit' => true,
+
         ]);
     }
 
 
     /**
      * Delete trick
-     * @Route("/admin/trick-delete/{id}", name="trick_delete", methods="DELETE")
+     * @Route("/admin/trick-delete/{slug}", name="trick_delete", methods="DELETE")
+     * @param string $slug
      * @param Request $request
-     * @param Trick $image
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Request $request, Trick $trick)
+    public function delete(string $slug, Request $request)
     {
+
+//        find trick by slug
+        $trick = $this->trickFinder->find($slug);
+
 
         if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
 
@@ -202,8 +233,8 @@ class TrickController extends AbstractController
         if ($this->isCsrfTokenValid('delete-trick', $request->request->get('_token'))) {
 
 
-            $this->em->remove($trick);
-            $this->em->flush();
+            $this->entityManager->remove($trick);
+            $this->entityManager->flush();
 
 
             $this->addFlash('success', "La figure a bien été supprimée");

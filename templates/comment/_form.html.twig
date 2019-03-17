@@ -1,7 +1,7 @@
 {{ form_start(form, {method: 'POST', action: path('comment_new', {'id': trick.id})}) }}
 <div class="d-flex justify-content-center flex-wrap">
 
-    {{ form_row(form.text) }}
+    {{ form_rest(form) }}
 
     <div>
         <button type="submit" class="btn btn-success">Leave a comment</button>

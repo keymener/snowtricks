@@ -1,1 +1,2 @@
 username.lenght.min: "Le pseudo doit avoir au minimum {{ limit }} caractères."
+The trick name cannot contain special characters: Le nom de la figure ne doit pas contenir de caractères spéciaux

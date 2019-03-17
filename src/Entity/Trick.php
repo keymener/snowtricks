@@ -22,6 +22,12 @@ class Trick
     private $id;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/[^a-zA-Z0-9_ ]/",
+     *     match=false,
+     *     message="The trick name cannot contain special characters"
+     *
+     * )
      * @Assert\Length(min="2", max =20)
      * @ORM\Column(type="string", length=255)
      */
@@ -68,6 +74,11 @@ class Trick
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="trick", cascade={"remove"})
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
 
     public function __construct()
@@ -257,6 +268,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
