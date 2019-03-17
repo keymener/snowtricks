@@ -15,13 +15,13 @@
                 {% if is_granted('edit', trick) %}
 
                     {#edit trick link#}
-                    <a href="{{ path('trick_edit', {'id': trick.id }) }}" class="trick-edit"><i
+                    <a href="{{ path('trick_edit', {'slug': trick.slug }) }}" class="trick-edit"><i
                                 class="fas fa-pencil-alt"></i></a>
 
 
                     {#delete trick button#}
                     <form class="trick-delete" method="post"
-                          action="{{ path('trick_delete', {'id': trick.id }) }}"
+                          action="{{ path('trick_delete', {'slug': trick.slug }) }}"
                           onsubmit="return confirm('Voulez-vous vraiment supprimer cette figure ?');">
                         <input type="hidden" name="_method" value="DELETE"/>
                         <input type="hidden" name="_token" value="{{ csrf_token('delete-trick') }}"/>
@@ -125,8 +125,8 @@
         {% if edit is defined %}
             <div class="row justify-content-center mt-3">
 
-                <a href="{{ path('image_new', {'id' : trick.id}) }}" class="btn btn-primary mx-3">Ajouter image</a>
-                <a href="{{ path('video_new', {'id' : trick.id}) }}" class="btn btn-primary mx-3">Ajouter video</a>
+                <a href="{{ path('image_new', {'slug' : trick.slug}) }}" class="btn btn-primary mx-3">Ajouter image</a>
+                <a href="{{ path('video_new', {'slug' : trick.slug}) }}" class="btn btn-primary mx-3">Ajouter video</a>
             </div>
 
 
@@ -166,17 +166,18 @@
         {% endif %}
 
         {#comment section#}
-        {% if is_granted('ROLE_USER') %}
+        {% if is_granted('ROLE_USER') and edit is defined and not edit %}
             <hr>
             <div class="row justify-content-center mt-4">
                 {{ include('comment/_form.html.twig') }}
             </div>
         {% endif %}
-        <hr>
-        <div class="row justify-content-center">
-            {{ include('comment/_tread.html.twig') }}
-        </div>
-
+        {% if edit is defined and not edit %}
+            <hr>
+            <div class="row justify-content-center">
+                {{ include('comment/_tread.html.twig') }}
+            </div>
+        {% endif %}
 
     </div>
     {#</div>#}
