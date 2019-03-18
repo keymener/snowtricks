@@ -9,19 +9,20 @@
 namespace App\Controller;
 
 
+use App\Entity\Token;
 use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\UserRegistrationType;
 use App\Service\MailSender;
 use App\Service\TokenGenerator;
+use App\Service\TokenSaver;
 use App\Service\UrlMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -31,7 +32,7 @@ class SecurityController extends AbstractController
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private $entityManager;
     /**
      * @var TokenGenerator
      */
@@ -44,13 +45,24 @@ class SecurityController extends AbstractController
      * @var UrlMaker
      */
     private $urlMaker;
+    /**
+     * @var TokenSaver
+     */
+    private $tokenSaver;
 
-    public function __construct(EntityManagerInterface $em, TokenGenerator $tokenGenerator, MailSender $mailSender, UrlMaker $urlMaker)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        TokenGenerator $tokenGenerator,
+        MailSender $mailSender,
+        UrlMaker $urlMaker,
+        TokenSaver $tokenSaver
+    )
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->tokenGenerator = $tokenGenerator;
         $this->mailSender = $mailSender;
         $this->urlMaker = $urlMaker;
+        $this->tokenSaver = $tokenSaver;
     }
 
 
@@ -79,17 +91,15 @@ class SecurityController extends AbstractController
 
             //generate token
             $token = $this->tokenGenerator->generate();
-            $user->setSubscribeToken($token);
+
+            //save Token
+            $this->tokenSaver->save($user, $token);
 
             //generate the url for the user
             $url = $this->urlMaker->generate('security_confirm_registration', $token);
 
             //send the mail
             $this->mailSender->send($user, 'email/registration.html.twig', $url);
-
-
-            $this->em->persist($user);
-            $this->em->flush();
 
             $this->addFlash('success', "Un email vient d'être envoyé, veuillez suivre les instructions de cet email afin de confirmer l'inscription.");
             return $this->redirectToRoute('trick_home');
@@ -111,22 +121,34 @@ class SecurityController extends AbstractController
     public function confirmRegistration(string $token)
     {
         //get the user using the received token
-        $user = $this->em->getRepository(User::class)->findOneBy([
-            'subscribeToken' => $token
+        $tokenEntity = $this->entityManager->getRepository(Token::class)->findOneBy([
+            'value' => $token
         ]);
 
-        //if the user doesn't exists then return a message
-        if ($user === null) {
+        //make datetime comparison between current datetime and tokens datetime
 
-            $this->addFlash('danger', "Le token est inconnu.");
+        $currentDatetime = new \DateTime();
+
+        if ($tokenEntity === null || $currentDatetime > $tokenEntity->getEndDate()) {
+
+            //remove tokenEntity when datetime interval is over
+            $this->entityManager->remove($tokenEntity);
+
+            $this->addFlash('danger', "Le token est invalide.");
 
             return $this->redirectToRoute('trick_home');
         }
 
-        $user->setSubscribeToken(null);
+        $user = $tokenEntity->getUser();
+
+        //active user
         $user->setIsActive(true);
 
-        $this->em->flush();
+        //remove tokenEntity
+        $this->entityManager->remove($tokenEntity);
+
+
+        $this->entityManager->flush();
         $this->addFlash('success', "Votre compte a bien été enregistré.");
 
         return $this->redirectToRoute('trick_home');
@@ -159,7 +181,7 @@ class SecurityController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function forgot(Request $request, MailSender $mailSender, TokenGenerator $tokenGenerator, UrlMaker $urlMaker )
+    public function forgot(Request $request, MailSender $mailSender, UrlMaker $urlMaker)
     {
         $potentialUser = new User();
         $form = $this->createForm(ForgotPasswordType::class, $potentialUser);
@@ -168,7 +190,7 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = $this->em->getRepository(User::class)->findOneBy([
+            $user = $this->entityManager->getRepository(User::class)->findOneBy([
                 'username' => $potentialUser->getUsername()
             ]);
 
@@ -180,15 +202,16 @@ class SecurityController extends AbstractController
             } else {
 
                 //generate token
-                $token = $tokenGenerator->generate();
-                $user->setResetToken($token);
-                $this->em->flush();
+                $token = $this->tokenGenerator->generate();
+
+                //save token
+                $this->tokenSaver->save($user, $token);
 
                 //generate the url
                 $url = $urlMaker->generate('security_reset', $token);
 
                 //send email
-                $mailSender->send($user, 'email/forgot.html.twig', $url );
+                $mailSender->send($user, 'email/forgot.html.twig', $url);
 
 
                 $this->addFlash('success',
@@ -214,17 +237,22 @@ class SecurityController extends AbstractController
      */
     public function reset(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user = $this->em->getRepository(User::class)->findOneBy([
-                'resetToken' => $token
+        $tokenEntity = $this->entityManager->getRepository(Token::class)->findOneBy([
+                'value' => $token
             ]
         );
 
-        if ($user === null) {
 
-            $this->addFlash('danger', "Le token est inconnu.");
+        //compare current date and the tokens date
+        $currentDatetime = new \DateTime();
+
+        if ($tokenEntity === null || $currentDatetime > $tokenEntity->getEndDate()) {
+
+            $this->addFlash('danger', "Le token est invalide.");
 
             return $this->redirectToRoute('trick_home');
         }
+        $user = $tokenEntity->getUser();
 
         $formUser = new User();
 
@@ -241,9 +269,16 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('trick_home');
             }
 
-            $user->setResetToken(null);
+            //remove tokenEntity
+            $this->entityManager->remove($tokenEntity);
+
+
+
+            $user->setIsActive(true);
+
+            //set new password
             $user->setPassword($passwordEncoder->encodePassword($user, $formUser->getPassword()));
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', "Mot de passe mis à jour");
             return $this->redirectToRoute('trick_home');
