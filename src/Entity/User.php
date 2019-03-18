@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,24 +55,21 @@ class User implements UserInterface, \Serializable
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $resetToken;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $subscribeToken;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isActive;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="Token", mappedBy="user", cascade={"remove"})
+     */
+    private $token;
+
+
     public function __construct()
     {
         $this->setRoles([self::ROLE_USER]);
+        $this->token = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,29 +183,6 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this;
-    }
-
-    public function getSubscribeToken(): ?string
-    {
-        return $this->subscribeToken;
-    }
-
-    public function setSubscribeToken(?string $subscribeToken): self
-    {
-        $this->subscribeToken = $subscribeToken;
-
-        return $this;
-    }
 
     public function getIsActive(): ?bool
     {
@@ -219,6 +195,39 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+
+    /**
+     * @return Collection|Token[]
+     */
+    public function getToken(): Collection
+    {
+        return $this->token;
+    }
+
+    public function addToken(Token $token): self
+    {
+        if (!$this->token->contains($token)) {
+            $this->token[] = $token;
+            $token->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToken(Token $token): self
+    {
+        if ($this->token->contains($token)) {
+            $this->token->removeElement($token);
+            // set the owning side to null (unless already changed)
+            if ($token->getUser() === $this) {
+                $token->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 
 }

@@ -4,4 +4,6 @@ Bonjour {{ user.username }}! Vous avez demandé à réinitialiser votre mot de p
 
 <a href="{{ param }}">Veuillez cliquer sur ce lien pour réinitialiser votre mot de passe.</a>
 
+Attention! vous avez {{ constant('App\\Entity\\Token::LIFETIME') }} min pour valider votre nouveau mot de passe.
+
 Merci!

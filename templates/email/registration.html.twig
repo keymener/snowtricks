@@ -5,6 +5,8 @@ Bonjour {{ user.username }}! Vous avez fait une demande d'inscription sur Snowtr
 
 Pour vous terminer l'inscription, <a href="{{ param }}">cliquez sur ce lien .</a>
 
+Attention! vous avez {{ constant('App\\Entity\\Token::LIFETIME') }} min pour valider votre compte.
+
 
 Merci!
 
