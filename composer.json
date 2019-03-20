@@ -1,4 +1,5 @@
 {
+    "name": "keymener/snowtricks",
     "type": "project",
     "license": "proprietary",
     "require": {
