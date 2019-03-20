@@ -2,6 +2,7 @@
     "name": "keymener/snowtricks",
     "type": "project",
     "license": "proprietary",
+    "description": "This is an exercise from openclassrooms.com in order to learn how to build a website with Symfony",
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
