@@ -26,7 +26,7 @@ class UserChecker implements UserCheckerInterface
         }
 
         /** @var User $user */
-        if(null === $user->getIsActive()){
+        if(null === $user->getActive()){
 
             throw new CustomUserMessageAuthenticationException(
               "Le compte n'a pas été activé."

@@ -142,7 +142,7 @@ class SecurityController extends AbstractController
         $user = $tokenEntity->getUser();
 
         //active user
-        $user->setIsActive(true);
+        $user->setActive(true);
 
         //remove tokenEntity
         $this->entityManager->remove($tokenEntity);
@@ -274,7 +274,7 @@ class SecurityController extends AbstractController
 
 
 
-            $user->setIsActive(true);
+            $user->setActive(true);
 
             //set new password
             $user->setPassword($passwordEncoder->encodePassword($user, $formUser->getPassword()));

@@ -18,16 +18,7 @@ class TrickVoter extends Voter
 {
 
     const EDIT = 'edit';
-    /**
-     * @var Security
-     */
-    private $security;
 
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
 
     protected function supports($attribute, $subject)
     {
