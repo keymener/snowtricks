@@ -184,12 +184,12 @@ class User implements UserInterface, \Serializable
     }
 
 
-    public function getIsActive(): ?bool
+    public function getActive(): ?bool
     {
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): self
+    public function setActive(bool $isActive): self
     {
         $this->isActive = $isActive;
 
