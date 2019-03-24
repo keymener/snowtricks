@@ -116,13 +116,15 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{slug}/{moreComments}", defaults={"more"=null}, name="trick_view", methods={"GET|POST"})
+     * @Route("/trick/{slug}/{moreComments}", name="trick_view", methods={"GET|POST"})
      * @param string $slug
      * @param string|null $moreComments
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function view(string $slug, string $moreComments = null)
     {
+
+
 //        find trick by slug
         $trick = $this->trickFinder->find($slug);
 
@@ -131,6 +133,8 @@ class TrickController extends AbstractController
 
         //get firsts comments if more is not set
         if (null === $moreComments) {
+
+
             $comments = $this->entityManager->getRepository(Comment::class)->findCommentsByTrick(
                 $trick,
                 self::COMMENTS_PER_PAGE
@@ -185,18 +189,15 @@ class TrickController extends AbstractController
 
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'La figure a bien été modifiée');
-            return $this->redirectToRoute('trick_view', [
-                'slug' => $trick->getSlug(),
-            ]);
+                $this->addFlash('success', 'La figure a bien été modifiée');
+                return $this->redirectToRoute('trick_view', [
+                    'slug' => $trick->getSlug(),
+                ]);
+
 
         }
 
-        //Display flash message error when there is an error into form
-        if (!empty($form->getErrors(true))) {
-            dump($form->getErrors(true));
-            $this->addFlash('danger', "Il y a une erreur dans le formulaire");
-        }
+
 
         // get Trick name to handle display of the name when a constraint error appear
         $trick->setName($trickName);

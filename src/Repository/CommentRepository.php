@@ -28,8 +28,8 @@ class CommentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.trick = :trick')
             ->setParameter('trick', $trick->getId())
-            ->setMaxResults($maxResult)
             ->orderBy('c.datetime', 'desc')
+            ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult()
             ;
