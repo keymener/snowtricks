@@ -166,13 +166,13 @@
         {% endif %}
 
         {#comment section#}
-        {% if is_granted('ROLE_USER') and edit is defined and not edit %}
+        {% if is_granted('ROLE_USER') and edit is not defined %}
             <hr>
             <div class="row justify-content-center mt-4">
                 {{ include('comment/_form.html.twig') }}
             </div>
         {% endif %}
-        {% if edit is defined and not edit %}
+        {% if edit is not defined %}
             <hr>
             <div class="row justify-content-center">
                 {{ include('comment/_tread.html.twig') }}
