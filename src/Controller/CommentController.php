@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
 
-    const COMMENT_PER_PAGE = 5 ;
+    const COMMENT_PER_PAGE = 5;
 
     /**
      * @var EntityManagerInterface
@@ -58,6 +58,7 @@ class CommentController extends AbstractController
 
             $this->addFlash('success', "Votre message a bien été enregistré");
             return $this->redirectToRoute('trick_view', [
+                'id' => $trick->getId(),
                 'slug' => $trick->getSlug(),
             ]);
 

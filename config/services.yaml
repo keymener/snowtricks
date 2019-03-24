@@ -41,6 +41,10 @@ services:
         tags:
         - { name: doctrine.event_subscriber, connection: default }
 
+    App\EventSubscriber\YoutubeUrlSubscriber:
+        tags:
+        - { name: doctrine.event_subscriber, connection: default }
+
     App\Service\MailSender:
         arguments:
             $fromEmail: '%from_email%'

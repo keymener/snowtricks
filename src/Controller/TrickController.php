@@ -8,6 +8,7 @@ use App\Form\CommentType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
 use App\Security\Voter\TrickVoter;
+use App\Service\SlugTransformer;
 use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,17 +117,21 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{slug}/{moreComments}", name="trick_view", methods={"GET|POST"})
+     * @Route("/trick/{id}/{slug}/{moreComments}", name="trick_view", methods={"GET|POST"})
      * @param string $slug
      * @param string|null $moreComments
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(string $slug, string $moreComments = null)
+    public function view(Trick $trick, string $slug, string $moreComments = null)
     {
 
+        if ($trick->getSlug() !== $slug) {
+            return $this->redirectToRoute('trick_view', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug(),
 
-//        find trick by slug
-        $trick = $this->trickFinder->find($slug);
+            ]);
+        }
 
         //comment form
         $form = $this->createForm(CommentType::class);
@@ -158,16 +163,21 @@ class TrickController extends AbstractController
 
     /**
      * Edit a trick
-     * @Route("admin/trick/edit/{slug}", name="trick_edit", methods={"GET|POST"})
+     * @Route("admin/trick/edit/{id}/{slug}", name="trick_edit", methods={"GET|POST"})
      * @param string $slug
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function edit(string $slug, Request $request)
+    public function edit(Trick $trick, string $slug, Request $request)
     {
 
-        //        find trick by slug
-        $trick = $this->trickFinder->find($slug);
+        if ($trick->getSlug() !== $slug) {
+            return $this->redirectToRoute('trick_edit', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug(),
+
+            ]);
+        }
 
         // get Trick name to handle display of the name when a constraint error appear
         $trickName = $trick->getName();
@@ -189,14 +199,14 @@ class TrickController extends AbstractController
 
             $this->entityManager->flush();
 
-                $this->addFlash('success', 'La figure a bien été modifiée');
-                return $this->redirectToRoute('trick_view', [
-                    'slug' => $trick->getSlug(),
-                ]);
+            $this->addFlash('success', 'La figure a bien été modifiée');
+            return $this->redirectToRoute('trick_view', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug()
+            ]);
 
 
         }
-
 
 
         // get Trick name to handle display of the name when a constraint error appear
@@ -213,16 +223,22 @@ class TrickController extends AbstractController
 
     /**
      * Delete trick
-     * @Route("/admin/trick-delete/{slug}", name="trick_delete", methods="DELETE")
+     * @Route("/admin/trick-delete/{id}/{slug}", name="trick_delete", methods="DELETE")
+     * @param Trick $trick
      * @param string $slug
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(string $slug, Request $request)
+    public function delete(Trick $trick, string $slug, Request $request)
     {
 
-//        find trick by slug
-        $trick = $this->trickFinder->find($slug);
+         if ($trick->getSlug() !== $slug) {
+            return $this->redirectToRoute('trick_delete', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug(),
+
+            ]);
+        }
 
 
         if (!$this->isGranted(TrickVoter::EDIT, $trick)) {
