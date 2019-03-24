@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\ImageType;
+use App\Service\SlugTransformer;
 use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,17 +28,20 @@ class ImageController extends AbstractController
 
     /**
      * New image
-     * @Route("admin/image/new/trick/{slug}", name="image_new", methods={"GET|POST"})
+     * @Route("admin/image/new/trick-{id}/{slug}", name="image_new", methods={"GET|POST"})
      * @param string $slug
      * @param Request $request
-     * @param TrickBySlugFinder $trickFinder
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function new(string $slug, Request $request, TrickBySlugFinder $trickFinder)
+    public function new(Trick $trick, string $slug, Request $request, SlugTransformer $slugTransformer)
     {
 
-        //        find trick by slug
-        $trick = $trickFinder->find($slug);
+        if ($trick->getSlug() !== $slug) {
+            return $this->redirectToRoute('image_new', [
+                'id' => $trick->getId(),
+                'slug' => $trick->getSlug()
+            ]);
+        }
 
         $image = new Image();
 
@@ -55,6 +59,7 @@ class ImageController extends AbstractController
             $this->addFlash('success', "L' image a bien été ajoutée");
             return $this->redirectToRoute('trick_edit', [
                 'id' => $trick->getId(),
+                'slug' => $trick->getSlug()
             ]);
 
         }
@@ -89,6 +94,7 @@ class ImageController extends AbstractController
             $this->addFlash('success', "L' image a bien été modifiée");
             return $this->redirectToRoute('trick_edit', [
                 'id' => $image->getTrick()->getId(),
+                'slug' => $image->getTrick()->getSlug()
             ]);
 
         }
@@ -120,6 +126,7 @@ class ImageController extends AbstractController
 
         return $this->redirectToRoute('trick_edit', [
             'id' => $image->getTrick()->getId(),
+            'slug' => $image->getTrick()->getSlug()
         ]);
     }
 
