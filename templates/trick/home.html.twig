@@ -65,7 +65,7 @@
                                 {{ trick.name }}
                             </a>
                         </div>
-                        {% if is_granted('edit', trick) %}
+                        {% if app.user and is_granted('edit', trick) %}
                             {#edit trick button#}
                             <a class="links ml-3" href="{{ path('trick_edit', {'id': trick.id, 'slug': trick.slug}) }}"><i
                                         class="fas fa-pencil-alt"></i></a>
