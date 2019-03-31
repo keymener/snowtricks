@@ -37,7 +37,14 @@ class TokenSaver
     public function save(User $user, string $tokenValue)
     {
 
-        $token = new Token();
+        $token = $this->entityManager->getRepository(Token::class)->findOneBy([
+                'user' => $user
+            ]
+        );
+
+        if (null === $token) {
+            $token = new Token();
+        }
 
 
         //add lifetime to current date
@@ -49,8 +56,10 @@ class TokenSaver
         $token->setValue($tokenValue);
 
 
-        $this->entityManager->persist($user);
-        $this->entityManager->persist($token);
+//        $this->entityManager->persist($user);
+        if (!$this->entityManager->contains($token)) {
+            $this->entityManager->persist($token);
+        }
         $this->entityManager->flush();
 
     }

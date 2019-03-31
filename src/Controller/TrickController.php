@@ -22,16 +22,12 @@ class TrickController extends AbstractController
 
     const TRICKS_PER_PAGE = 15;
     const COMMENTS_PER_PAGE = 5;
-    /**
-     * @var TrickBySlugFinder
-     */
-    private $trickFinder;
 
-    public function __construct(EntityManagerInterface $entityManager, TrickBySlugFinder $trickFinder)
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
 
-        $this->trickFinder = $trickFinder;
     }
 
     /**
