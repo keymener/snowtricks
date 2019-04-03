@@ -51,6 +51,7 @@ class ImageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
             $image->setDateUpdate(new \DateTime());
             $image->setTrick($trick);
             $this->entityManager->persist($image);

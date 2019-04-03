@@ -26,12 +26,16 @@ class FileManager
      */
     public function upload(UploadedFile $file)
     {
+
         $fileName = md5(uniqid()) . '.' . $file->guessExtension();
 
+
         try {
+
             $file->move($this->uploadDirectory, $fileName);
         } catch (FileException $e) {
-
+            echo "File error: ".$e->getMessage();
+            exit(1);
         }
 
         return $fileName;
