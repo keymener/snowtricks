@@ -25,9 +25,13 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
         /** @var User $user */
         $user = $this->getReference('user');
 
+
+        //group grabs
+
         /** @var TrickGroup $group */
         $group = $this->getReference('group-grabs');
 
+        //trick mute
 
         $trick = new Trick();
         $trick->setName('mute')
@@ -38,32 +42,27 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
 
 
         $file = $this->handleFile('public/img/samples/mute-air.jpg');
-
         $image = $this->handleImage('Mute 1', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
 
         $file = $this->handleFile('public/img/samples/mute-grab-snowboarding.jpg');
-
         $image = $this->handleImage('Mute 2', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
 
         $video = new Video();
         $video->setUrl('https://www.youtube.com/watch?v=yyN1gQqsMwM');
-
         $manager->persist($video);
-
         $trick->addVideo($video);
 
 
         $manager->persist($trick);
+
+
+        //trick indy
 
         $trick = new Trick();
         $trick->setName('indy')
@@ -74,29 +73,23 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
 
 
         $file = $this->handleFile('public/img/samples/indy.jpg');
-
         $image = $this->handleImage('Indy 1', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
         $file = $this->handleFile('public/img/samples/indy2.jpg');
-
         $image = $this->handleImage('Indy 2', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
         $video = new Video();
         $video->setUrl('https://www.youtube.com/watch?v=iKkhKekZNQ8');
-
         $trick->addVideo($video);
-
         $manager->persist($video);
 
         $manager->persist($trick);
+
+        //trick stalefish
 
         $trick = new Trick();
         $trick->setName('stalefish')
@@ -107,31 +100,55 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
 
 
         $file = $this->handleFile('public/img/samples/stale1.jpg');
-
         $image = $this->handleImage('Stalefish 1', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
         $file = $this->handleFile('public/img/samples/stale2.jpg');
-
         $image = $this->handleImage('Stalefish 2', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
         $video = new Video();
         $video->setUrl('https://www.youtube.com/watch?v=f9FjhCt_w2U');
-
         $trick->addVideo($video);
-
         $manager->persist($video);
 
         $manager->persist($trick);
 
 
+
+
+        //trick Japan
+
+        $trick = new Trick();
+        $trick->setName('Japan')
+            ->setDate(new \DateTime())
+            ->setDescription('saisie de l\'avant de la planche, avec la main avant, du côté de la carre frontside.')
+            ->setTrickGroup($group)
+            ->setUser($user);
+
+
+        $file = $this->handleFile('public/img/samples/japan.jpg');
+        $image = $this->handleImage('Stalefish 1', $file);
+        $trick->addImage($image);
+        $manager->persist($image);
+
+        $file = $this->handleFile('public/img/samples/japan2.png');
+        $image = $this->handleImage('Stalefish 2', $file);
+        $trick->addImage($image);
+        $manager->persist($image);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=CzDjM7h_Fwo');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+        $manager->persist($trick);
+
+
+
+        // group rotations
         /** @var TrickGroup $group */
         $group = $this->getReference('group-rotations');
 
@@ -148,23 +165,20 @@ Pour entrer sur une barre de slide, le rideur peut se mettre perpendiculaire à 
 
 
         $file = $this->handleFile('public/img/samples/180.jpg');
-
         $image = $this->handleImage('180', $file);
-
         $trick->addImage($image);
-
         $manager->persist($image);
 
 
         $video = new Video();
         $video->setUrl('https://www.youtube.com/watch?v=GnYAlEt-s00');
-
         $trick->addVideo($video);
-
         $manager->persist($video);
 
 
         $manager->persist($trick);
+
+        //trick 360
 
         $trick = new Trick();
         $trick->setName('360')
@@ -175,10 +189,119 @@ Pour entrer sur une barre de slide, le rideur peut se mettre perpendiculaire à 
 
         $video = new Video();
         $video->setUrl('https://www.youtube.com/watch?v=JJy39dO_PPE');
-
         $trick->addVideo($video);
-
         $manager->persist($video);
+
+        $manager->persist($trick);
+
+
+        //group flips
+        $group = $this->getReference('group-flips');
+
+        //backflip
+
+        $trick = new Trick();
+        $trick->setName('Backflip')
+            ->setDate(new \DateTime())
+            ->setDescription('Rotation verticale arrière')
+            ->setTrickGroup($group)
+            ->setUser($user);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=arzLq-47QFA');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+        $file = $this->handleFile('public/img/samples/backflip.jpg');
+        $image = $this->handleImage('Backflip', $file);
+        $manager->persist($image);
+        $trick->addImage($image);
+
+
+        $file = $this->handleFile('public/img/samples/backflip2.jpg');
+        $image = $this->handleImage('Backflip', $file);
+        $trick->addImage($image);
+        $manager->persist($image);
+
+        $manager->persist($trick);
+
+        //frontflip
+
+        $trick = new Trick();
+        $trick->setName('Frontflip')
+            ->setDate(new \DateTime())
+            ->setDescription('Rotation verticale avant')
+            ->setTrickGroup($group)
+            ->setUser($user);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=xhvqu2XBvI0');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=gMfmjr-kuOg');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+        $file = $this->handleFile('public/img/samples/frontflip.jpg');
+        $image = $this->handleImage('Frontflip', $file);
+        $manager->persist($image);
+        $trick->addImage($image);
+
+
+        $file = $this->handleFile('public/img/samples/frontflip2.jpg');
+        $image = $this->handleImage('Frontflip', $file);
+        $trick->addImage($image);
+        $manager->persist($image);
+
+        $manager->persist($trick);
+
+        //frontflip
+
+        $trick = new Trick();
+        $trick->setName('Mc twist')
+            ->setDate(new \DateTime())
+            ->setDescription('Figure de halfpipe')
+            ->setTrickGroup($group)
+            ->setUser($user);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=k-CoAquRSwY');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+
+        $file = $this->handleFile('public/img/samples/mctwist.jpg');
+        $image = $this->handleImage('Mc Twist', $file);
+        $manager->persist($image);
+        $trick->addImage($image);
+
+
+        $manager->persist($trick);
+
+        //group desaxed
+
+        $group = $this->getReference('group-desaxed');
+
+        //trick Cork
+        $trick = new Trick();
+        $trick->setName('Cork 540')
+            ->setDate(new \DateTime())
+            ->setDescription('Un mix entre une rotation 540 et un backflip')
+            ->setTrickGroup($group)
+            ->setUser($user);
+
+        $video = new Video();
+        $video->setUrl('https://www.youtube.com/watch?v=gT7MoamL-iY');
+        $trick->addVideo($video);
+        $manager->persist($video);
+
+        $file = $this->handleFile('public/img/samples/cork1.jpg');
+        $image = $this->handleImage('Cork 540', $file);
+        $trick->addImage($image);
+        $manager->persist($image);
+
 
         $manager->persist($trick);
 
