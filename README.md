@@ -24,14 +24,15 @@ composer install
 ```
 php bin/console doctrine:database:create
 ```
-5. Execute a migration with the latest version
+5. Update database shema
 ```
-php bin/console doctrine:migrations:migrate
+php bin/console doctrine:schema:update --force
 ```
-
-6. Add a random image "default.jpeg" into /public/uploads/images
-
-7. Load data fixtures to the database
+6. Load data fixtures to the database
 ```
 php bin/console doctrine:fixtures:load
+```
+7. Finaly, run your server
+```
+php bin/console server:run
 ```
