@@ -8,8 +8,6 @@ use App\Form\CommentType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
 use App\Security\Voter\TrickVoter;
-use App\Service\SlugTransformer;
-use App\Service\TrickBySlugFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +18,7 @@ class TrickController extends AbstractController
 
     private $entityManager;
 
-    const TRICKS_PER_PAGE = 15;
+    const TRICKS_PER_PAGE = 5;
     const COMMENTS_PER_PAGE = 5;
 
 

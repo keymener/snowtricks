@@ -81,9 +81,13 @@ class ImageSubscriber implements EventSubscriber
             return;
         }
 
+
         $file = $entity->getFile();
 
         if ($file instanceof UploadedFile) {
+
+
+
             $fileName = $this->uploader->upload($file);
             $entity->setName($fileName);
         } elseif ($file instanceof File) {
