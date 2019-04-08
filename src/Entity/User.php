@@ -61,7 +61,7 @@ class User implements UserInterface, \Serializable
 
 
     /**
-     * @ORM\OneToMany(targetEntity="Token", mappedBy="user", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Token", mappedBy="user", cascade={"persist", "remove"})
      */
     private $token;
 

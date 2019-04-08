@@ -31,7 +31,7 @@ class Token
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="token")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="token", cascade={"persist"})
      */
     private $user;
 
