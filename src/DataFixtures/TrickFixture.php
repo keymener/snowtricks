@@ -117,8 +117,6 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
         $manager->persist($trick);
 
 
-
-
         //trick Japan
 
         $trick = new Trick();
@@ -145,7 +143,6 @@ class TrickFixture extends Fixture implements OrderedFixtureInterface
         $manager->persist($video);
 
         $manager->persist($trick);
-
 
 
         // group rotations
