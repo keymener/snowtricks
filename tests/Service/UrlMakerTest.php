@@ -25,7 +25,7 @@ class UrlMakerTest extends TestCase
 
         $urlMaker = new UrlMaker($urlGeneratorInterface);
 
-        $this->assertEquals('test', $urlMaker->generate('security_confirm_registration', 'my_token'));
+        $this->assertEquals(null, $urlMaker->generate('security_confirm_registration', 'my_token'));
 
     }
 

@@ -17,6 +17,13 @@ class YoutubeLinkConvertor
 {
     public function convert(string $url)
     {
+
+        $hostname = parse_url($url, PHP_URL_HOST);
+
+        if($hostname !== 'www.youtube.com'){
+            return $url;
+        }
+
         preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/' , $url, $matches);
 
         if(null === $matches[2]){
