@@ -21,4 +21,5 @@
 
 
 /public/uploads/images/*
+/public/test-coverage/*
 !default.jpeg

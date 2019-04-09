@@ -72,7 +72,7 @@ class TrickController extends AbstractController
 
     /**
      * Create a new trick
-     * @Route("/trick/new", name="trick_new")
+     * @Route("/member/trick/new", name="trick_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */

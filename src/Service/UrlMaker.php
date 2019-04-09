@@ -5,7 +5,10 @@ namespace App\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-
+/**
+ * Class UrlMaker transforms symfony routes to url
+ * @package App\Service
+ */
 class UrlMaker
 {
 
