@@ -1,13 +1,13 @@
-<div class="comments">
+<div class="comments d-flex justify-content-center align-items-center flex-column">
 
-
+    <h4>{{ countComments }} COMMENTAIRE{% if countComments > 1 %}S{% endif %}</h4>
     {% for comment in comments %}
 
         <div class="d-flex card mt-1" {% if loop.first %}id="anchor"{% endif %}>
             <div class="card-header d-flex">
                 <div>
                     <b>
-                        {{ comment.user.username }}
+                        <i class="fas fa-user"></i> {{ comment.user.username }}
                     </b>
                 </div>
                 <div class="ml-1 ">
@@ -25,12 +25,17 @@
         </div>
 
     {% endfor %}
+    {% if comments is null %}
+        <p>Pas de commentaires</p>
+    {% elseif showButton %}
+        <div class="row justify-content-center mt-3">
+            <a href="{{ path('trick_view', {'id': trick.id, 'slug': trick.slug, 'showButton': true }) }}#anchor"
+               class="btn btn-info btn-sm">Charger plus
+                ...</a>
+        </div>
 
-    {% if moreComments is null %}
-    <div class="row justify-content-center mt-3">
-        <a href="{{ path('trick_view', {'id': trick.id, 'slug': trick.slug, 'moreComments': true }) }}#anchor" class="btn btn-info btn-sm">Charger plus
-            ...</a>
-    </div>
     {% endif %}
+
+
 </div>
 

@@ -111,14 +111,15 @@ class TrickController extends AbstractController
 
     /**
      * Show a trick
-     * @Route("/trick/{id}/{slug}/{moreComments}", name="trick_view", methods={"GET|POST"})
+     * @Route("/trick/{id}/{slug}/{showButton}", name="trick_view", methods={"GET|POST"})
+     * @param Trick $trick
      * @param string $slug
-     * @param string|null $moreComments
+     * @param bool $showButton
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(Trick $trick, string $slug, string $moreComments = null)
+    public function view(Trick $trick, string $slug, bool $showButton = false)
     {
-
+        //if slug is not corresponding to tricks-slug, redirect to good page
         if ($trick->getSlug() !== $slug) {
             return $this->redirectToRoute('trick_view', [
                 'id' => $trick->getId(),
@@ -130,18 +131,37 @@ class TrickController extends AbstractController
         //comment form
         $form = $this->createForm(CommentType::class);
 
-        //get firsts comments if more is not set
-        if (null === $moreComments) {
+        $countComments = $this->entityManager->getRepository(Comment::class)->countCommentsByTrick(
+            $trick
+        );
+
+        //get firsts comments if button is false
+        if ($showButton == false) {
 
 
             $comments = $this->entityManager->getRepository(Comment::class)->findCommentsByTrick(
                 $trick,
                 self::COMMENTS_PER_PAGE
             );
+
+            //hide button when comments are below the limit
+            if ($countComments > self::COMMENTS_PER_PAGE) {
+                $showButton = true;
+            }
+
+
         } else {
 
             //get all comments
-            $comments = $this->entityManager->getRepository(Comment::class)->findAll();
+            $comments = $this->entityManager->getRepository(Comment::class)->findBy(
+                [
+                    'trick' => $trick->getId()
+                ],
+                [
+                    'id' => 'DESC'
+                ]);
+            $showButton = false;
+
         }
 
 
@@ -149,7 +169,8 @@ class TrickController extends AbstractController
             'trick' => $trick,
             'comments' => $comments,
             'form' => $form->createView(),
-            'moreComments' => $moreComments
+            'showButton' => $showButton,
+            'countComments' => $countComments
 
         ]);
     }
@@ -226,7 +247,7 @@ class TrickController extends AbstractController
     public function delete(Trick $trick, string $slug, Request $request)
     {
 
-         if ($trick->getSlug() !== $slug) {
+        if ($trick->getSlug() !== $slug) {
             return $this->redirectToRoute('trick_delete', [
                 'id' => $trick->getId(),
                 'slug' => $trick->getSlug(),
