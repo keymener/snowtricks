@@ -1,6 +1,7 @@
-<div class="comments d-flex justify-content-center align-items-center flex-column">
-
-    <h4>{{ countComments }} COMMENTAIRE{% if countComments > 1 %}S{% endif %}</h4>
+<div class="comments ">
+    <div class="row justify-content-center">
+        <h4>{{ countComments }} COMMENTAIRE{% if countComments > 1 %}S{% endif %}</h4>
+    </div>
     {% for comment in comments %}
 
         <div class="d-flex card mt-1" {% if loop.first %}id="anchor"{% endif %}>
