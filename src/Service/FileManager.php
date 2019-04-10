@@ -35,7 +35,7 @@ class FileManager
             $file->move($this->uploadDirectory, $fileName);
         } catch (FileException $e) {
             echo "File error: ".$e->getMessage();
-            exit(1);
+
         }
 
         return $fileName;

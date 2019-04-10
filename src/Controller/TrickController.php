@@ -31,7 +31,7 @@ class TrickController extends AbstractController
     /**
      * Home page
      *
-     * @Route("/", name="trick_home")
+     * @Route("/", name="trick_home", methods={"GET|POST"})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function home()
@@ -72,7 +72,7 @@ class TrickController extends AbstractController
 
     /**
      * Create a new trick
-     * @Route("/member/trick/new", name="trick_new")
+     * @Route("/member/trick/new", name="trick_new", methods={"GET|POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -136,7 +136,7 @@ class TrickController extends AbstractController
         );
 
         //get firsts comments if button is false
-        if ($showButton == false) {
+        if ($showButton === false) {
 
 
             $comments = $this->entityManager->getRepository(Comment::class)->findCommentsByTrick(

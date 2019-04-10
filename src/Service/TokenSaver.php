@@ -56,7 +56,6 @@ class TokenSaver
         $token->setValue($tokenValue);
 
 
-//        $this->entityManager->persist($user);
         if (!$this->entityManager->contains($token)) {
             $this->entityManager->persist($token);
         }

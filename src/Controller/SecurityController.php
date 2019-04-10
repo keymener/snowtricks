@@ -68,7 +68,7 @@ class SecurityController extends AbstractController
 
     /**
      * Register a user
-     * @Route("/register", name="security_register")
+     * @Route("/register", name="security_register", methods={"GET|POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -157,7 +157,7 @@ class SecurityController extends AbstractController
 
     /**
      * Security login for user
-     * @Route("/login", name="security_login")
+     * @Route("/login", name="security_login", methods={"GET|POST"})
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -175,7 +175,7 @@ class SecurityController extends AbstractController
 
     /**
      * Handle forgot password
-     * @Route("/forgot_password", name="security_forgot")
+     * @Route("/forgot_password", name="security_forgot", methods={"GET|POST"})
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -229,7 +229,7 @@ class SecurityController extends AbstractController
 
     /**
      * Reset password
-     * @Route("/reset_password/{token}", name="security_reset")
+     * @Route("/reset_password/{token}", name="security_reset", methods={"GET|POST"})
      * @param Request $request
      * @param string $token
      * @param UserPasswordEncoderInterface $passwordEncoder
@@ -294,7 +294,7 @@ class SecurityController extends AbstractController
 
     /**
      * Security logout
-     * @Route("/logout", name="security_logout")
+     * @Route("/logout", name="security_logout", methods={"GET|POST"})
      */
     public function logout()
     {
