@@ -1,6 +1,6 @@
 # Snowtricks
 
-[![SymfonyInsight](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969/big.svg)](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969)
+[![SymfonyInsight](https://insight.symfony.com/projects/0bb7dc35-ae15-4c45-9a4b-1de4ea896d36/big.svg)](https://insight.symfony.com/projects/0bb7dc35-ae15-4c45-9a4b-1de4ea896d36)
 
 
 This is the project 6, an exercise from [openclassrooms.com](https://openclassrooms.com/) in order to learn how to build a website with Symfony.
