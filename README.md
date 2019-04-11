@@ -2,6 +2,7 @@
 
 [![SymfonyInsight](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969/big.svg)](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969)
 
+
 This is the project 6, an exercise from [openclassrooms.com](https://openclassrooms.com/) in order to learn how to build a website with Symfony.
 The theme is to build a community blog called "Snowtricks". 
 Any authenticated user can make his own trick explanations using some pictures and videos.
