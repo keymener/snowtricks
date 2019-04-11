@@ -1,5 +1,12 @@
 # Snowtricks
-This is an exercise from openclassrooms.com in order to learn how to build a website with Symfony
+
+[![SymfonyInsight](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969/big.svg)](https://insight.symfony.com/projects/7d2ba0ba-9610-4212-8ccd-7f2d26096969)
+
+This is the project 6, an exercise from openclassrooms.com in order to learn how to build a website with Symfony.
+The theme is to build a community blog called "Snowtricks". 
+Any user can make his own trick explanations using some pictures and videos.
+
+For this project I'm using Symfony 4.
 
 ### Requirements
 
@@ -18,21 +25,31 @@ git clone https://github.com/keymener/snowtricks.git
 cd snowtricks
 composer install
 ```
-3. Configure your .env in order to link your project with your mysql database
-
+3. Configure your .env in order to link your project with your mysql database and mail system.
+```
+APP_DATABASE:
+```
 4. Create the database
 ```
 php bin/console doctrine:database:create
 ```
 5. Update database shema
 ```
-php bin/console doctrine:schema:update --force
+php bin/console doctrine:migrations:migrate
 ```
 6. Load data fixtures to the database
 ```
 php bin/console doctrine:fixtures:load
 ```
-7. Finaly, run your server
+7. Run your server
 ```
 php bin/console server:run
+```
+
+### Finaly...
+
+Now you can test the application in dev environment with the generic user: userTest, password: test
+You can also run few functionnal unit and functionnal test with phpunit:
+```
+bin/phpunit
 ```
