@@ -4,7 +4,7 @@
 
 This is the project 6, an exercise from [openclassrooms.com](https://openclassrooms.com/) in order to learn how to build a website with Symfony.
 The theme is to build a community blog called "Snowtricks". 
-Any user can make his own trick explanations using some pictures and videos.
+Any authenticated user can make his own trick explanations using some pictures and videos.
 
 For this project I'm using Symfony 4.
 
