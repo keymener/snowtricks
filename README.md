@@ -49,7 +49,7 @@ php bin/console server:run
 ### Finaly...
 
 Now you can test the application in dev environment with the generic user: userTest, password: test
-You can also run few functionnal unit and functionnal test with phpunit:
+You can also run few functionnal and unit tests with phpunit:
 ```
 bin/phpunit
 ```
