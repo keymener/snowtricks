@@ -26,9 +26,10 @@ git clone https://github.com/keymener/snowtricks.git
 cd snowtricks
 composer install
 ```
-3. Configure your .env in order to link your project with your mysql database and mail system.
+3. Create a .env.local file and adapt it to your own environment for database and mail, for example:
 ```
-APP_DATABASE:
+DATABASE_URL=mysql://dbuser:password@127.0.0.1:3306/yourdb
+MAILER_URL=smtp://mymailserver.com/?timeout=60&encryption=ssl&auth_mode=login&user=user@mymail.fr&password=mypasswd
 ```
 4. Create the database
 ```
