@@ -38,7 +38,8 @@ php bin/console doctrine:database:create
 ```
 php bin/console doctrine:migrations:migrate
 ```
-6. Load data fixtures to the database
+6. Load data fixtures to the database.
+This is where the generic user and the admin user is set. You can change UserFixture.php file to suit your needs before loading fixtures. 
 ```
 php bin/console doctrine:fixtures:load
 ```

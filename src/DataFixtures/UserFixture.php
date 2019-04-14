@@ -23,6 +23,7 @@ class UserFixture extends Fixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        //user
         $user = new User();
 
         $user->setActive(true)
@@ -34,6 +35,21 @@ class UserFixture extends Fixture implements OrderedFixtureInterface
 
         $user->setPassword($password);
         $manager->persist($user);
+
+        $user = new User();
+
+        //admin
+        $user->setActive(true)
+            ->setUsername('userAdmin')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setEmail('admin@myemail.com');
+
+        $password = $this->passwordEncoder->encodePassword($user, 'test');
+
+        $user->setPassword($password);
+        $manager->persist($user);
+
+
         $manager->flush();
 
 
