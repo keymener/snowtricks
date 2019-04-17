@@ -49,10 +49,11 @@
             {% if app.user.username is defined %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('trick_new') }}">
-                        New Trick
+                        Ajout Figure
                     </a>
                 </li>
             {% endif %}
+
 
             {% if app.user.username is not defined %}
                 <li class="nav-item">
@@ -69,12 +70,29 @@
                     </a>
                 </li>
             {% endif %}
+            {% if app.user.username is defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user_edit') }}">
+                        Profil
+                    </a>
+                </li>
+            {% endif %}
 
             {% if app.user.username is defined %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('security_logout') }}">
-                        Déconnexion
-                    </a>
+                    <div class="d-flex">
+
+                        <a class="nav-link" href="{{ path('security_logout') }}">
+                            Déconnexion
+                        </a>
+                        <img class="avatar"
+                             src="{% if app.user.image %}
+
+                            {{ asset('uploads/images/'~app.user.image.name) }}
+
+                            {% endif %}"
+                             alt="avatar">
+                    </div>
                 </li>
             {% endif %}
         </ul>
