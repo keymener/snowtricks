@@ -5,15 +5,27 @@
     {% for comment in comments %}
 
         <div class="d-flex card mt-1" {% if loop.first %}id="anchor"{% endif %}>
-            <div class="card-header d-flex">
-                <div>
+            <div class="card-header d-flex align-items-center">
+
+                    <img class="avatar mr-1"
+                         src="{% if comment.user.image %}
+
+                            {{ asset('uploads/images/'~comment.user.image.name) }}
+
+                            {% endif %}"
+                         alt="avatar">
                     <b>
-                        <i class="fas fa-user"></i> {{ comment.user.username }}
+                        {% if comment.user.firstname and comment.user.lastname %}
+                            {{ comment.user.firstname }} {{ comment.user.lastname }}
+                        {% else %}
+                            {{ comment.user.username }}
+                        {% endif %}
                     </b>
-                </div>
+
                 <div class="ml-1 ">
                     <small>
                         le {{ comment.datetime | date('d/m/y', 'Europe/Paris') }}
+                        à {{ comment.datetime | date('H:i', 'Europe/Paris') }}
                     </small>
                 </div>
             </div>

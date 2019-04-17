@@ -66,6 +66,21 @@ class User implements UserInterface, \Serializable
      */
     private $token;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Image", cascade={"persist", "remove"})
+     */
+    private $image;
+
 
     public function __construct()
     {
@@ -144,7 +159,8 @@ class User implements UserInterface, \Serializable
 
     /**
      * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
+     *
+     * @link  https://php.net/manual/en/serializable.serialize.php
      * @return string the string representation of the object or null
      * @since 5.1.0
      */
@@ -160,10 +176,13 @@ class User implements UserInterface, \Serializable
 
     /**
      * Constructs the object
-     * @link https://php.net/manual/en/serializable.unserialize.php
+     *
+     * @link  https://php.net/manual/en/serializable.unserialize.php
+     *
      * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
+     *                           The string representation of the object.
+     *                           </p>
+     *
      * @return void
      * @since 5.1.0
      */
@@ -173,7 +192,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
-            ) = unserialize($serialized, ['allowed_classes' => false]);
+            )
+            = unserialize($serialized, ['allowed_classes' => false]);
 
     }
 
@@ -228,7 +248,53 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
 
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 
 
 }

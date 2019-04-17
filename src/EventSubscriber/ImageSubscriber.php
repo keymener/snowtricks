@@ -23,6 +23,7 @@ class ImageSubscriber implements EventSubscriber
 
     private $uploader;
 
+
     public function __construct(FileManager $uploader)
     {
         $this->uploader = $uploader;
@@ -35,6 +36,7 @@ class ImageSubscriber implements EventSubscriber
             Events::postRemove,
             Events::prePersist,
             Events::preUpdate,
+
         ];
     }
 
@@ -47,7 +49,6 @@ class ImageSubscriber implements EventSubscriber
         if (!$entity instanceof Image) {
             return;
         }
-
 
         $this->uploader->remove($entity->getName());
     }
@@ -65,6 +66,12 @@ class ImageSubscriber implements EventSubscriber
         $entity = $args->getEntity();
 
         if (!$entity instanceof Image) {
+            return;
+        }
+
+        $file = $entity->getFile();
+
+        if (!$file instanceof UploadedFile) {
             return;
         }
 
@@ -87,11 +94,12 @@ class ImageSubscriber implements EventSubscriber
         if ($file instanceof UploadedFile) {
 
 
-
             $fileName = $this->uploader->upload($file);
             $entity->setName($fileName);
         } elseif ($file instanceof File) {
             $entity->setName($file->getFilename());
+        } else {
+
         }
     }
 }
