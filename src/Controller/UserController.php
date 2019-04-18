@@ -9,7 +9,7 @@ use App\Form\UserEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
+
 
 class UserController extends AbstractController
 {
@@ -29,7 +29,6 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $currentImage = $user->getImage();
 
         $form = $this->createForm(UserEditType::class, $user);
 
