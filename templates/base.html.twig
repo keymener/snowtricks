@@ -85,13 +85,11 @@
                         <a class="nav-link" href="{{ path('security_logout') }}">
                             Déconnexion
                         </a>
-                        <img class="avatar"
-                             src="{% if app.user.image %}
-
-                            {{ asset('uploads/images/'~app.user.image.name) }}
-
-                            {% endif %}"
-                             alt="avatar">
+                        {% if app.user.image %}
+                            <img class="avatar" src="{{ asset('uploads/images/'~app.user.image.name) }}" alt="avatar">
+                        {% else %}
+                            <i class="fas fa-user mt-2 ml-1"></i>
+                        {% endif %}
                     </div>
                 </li>
             {% endif %}

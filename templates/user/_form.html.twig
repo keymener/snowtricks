@@ -8,13 +8,17 @@
             <div class="row justify-content-center">
 
                 {% if app.user.username is defined %}
-                    <img class="big-avatar"
-                         src="{% if app.user.image %}
+                    {% if app.user.image %}
+                        <img class="big-avatar"
+                             src="
 
                             {{ asset('uploads/images/'~app.user.image.name) }}
 
-                            {% endif %}"
-                         alt="avatar">
+                            "
+                             alt="avatar">
+                    {% else %}
+                        <i class="fas fa-user"></i>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="row justify-content-center">
