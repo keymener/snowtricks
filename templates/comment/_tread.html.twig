@@ -7,20 +7,22 @@
         <div class="d-flex card mt-1" {% if loop.first %}id="anchor"{% endif %}>
             <div class="card-header d-flex align-items-center">
 
-                    <img class="avatar mr-1"
-                         src="{% if comment.user.image %}
+                <img class="avatar mr-1"
+                     src="{% if comment.user.image %}
 
                             {{ asset('uploads/images/'~comment.user.image.name) }}
 
                             {% endif %}"
-                         alt="avatar">
-                    <b>
-                        {% if comment.user.firstname and comment.user.lastname %}
-                            {{ comment.user.firstname }} {{ comment.user.lastname }}
-                        {% else %}
-                            {{ comment.user.username }}
-                        {% endif %}
-                    </b>
+                     alt="avatar">
+                <b>
+                    {% if comment.user.firstname and comment.user.lastname %}
+                        {{ comment.user.firstname |capitalize }} {{ comment.user.lastname |capitalize }}
+                    {% endif %}
+                </b>
+                <span class="text-muted ml-1">
+                            @{{ comment.user.username }}
+                </span>
+
 
                 <div class="ml-1 ">
                     <small>
