@@ -117,7 +117,7 @@ class TrickController extends AbstractController
      * @param bool $showButton
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(Trick $trick, string $slug, bool $showButton = null)
+    public function view(Trick $trick, string $slug, bool $showButton = false)
     {
         //if slug is not corresponding to tricks-slug, redirect to good page
         if ($trick->getSlug() !== $slug) {
