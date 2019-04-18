@@ -19,7 +19,7 @@ class TrickController extends AbstractController
     private $entityManager;
 
     const TRICKS_PER_PAGE = 5;
-    const COMMENTS_PER_PAGE = 5;
+    const COMMENTS_PER_PAGE = 10;
 
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -117,7 +117,7 @@ class TrickController extends AbstractController
      * @param bool $showButton
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function view(Trick $trick, string $slug, bool $showButton = false)
+    public function view(Trick $trick, string $slug, bool $showButton = null)
     {
         //if slug is not corresponding to tricks-slug, redirect to good page
         if ($trick->getSlug() !== $slug) {
