@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
 
-    const COMMENT_PER_PAGE = 5;
+    const COMMENT_PER_PAGE = 10;
 
     /**
      * @var EntityManagerInterface
